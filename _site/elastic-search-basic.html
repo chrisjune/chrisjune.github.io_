@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>tom_blog | Elastic search</title>
+    <meta name="description" content="엘라스틱서치의 개념과 용어에 대해 알아본다">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/elastic-search-basic">
+    <link rel="alternate" type="application/rss+xml" title="tom_blog" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-water.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>Elastic search</h1>
+
+            <p>엘라스틱서치의 개념과 용어에 대해 알아본다</p>
+
+<h2 id="분산형-restful-검색-및-분석-엔진">분산형 RESTful 검색 및 분석 엔진</h2>
+<ul>
+  <li>스키마에 자유로운 JSON 문서와 분산 검색을 제공함</li>
+</ul>
+
+<h2 id="rest-api형식">REST API형식</h2>
+<ul>
+  <li>curl -XPUT, XGET, XDELETE, XOPST http://host:port/(index)/(type)/(id)</li>
+  <li>id가 존재하지 않으면, 자동으로 생성됨</li>
+</ul>
+
+<h2 id="필수-용어-및-개념">필수 용어 및 개념</h2>
+<ul>
+  <li>NTR(Near Time Realtime): 색인부터 검색이 실제로 가능해지는 시점까지 시간(보통 1초)</li>
+  <li>클러스터<br />
+하나이상의 노트(서버)의 집합. 노드는 클러스터에 Assign할 때 이름을 참조하기 때문에 클러스터 명은 고유하게 짓는다. 기본이름: Elastic search</li>
+  <li>노드<br />
+단일서버로서 클러스터 안에 속해있다. 기본적으로  elasticsearch라는 이름의 클러스터에 자동으로 형성되어 일부가 된다. 기본이름: UUID(Universal unique IDentifier)</li>
+  <li>Index - Database, Type - Table, Document - Row  
+    <h2 id="rdbms-과-elastic-search-비교">RDBMS 과 Elastic search 비교</h2>
+    <p><img src="../img/post-assets/database-elastic.png" alt="database vs elastic search" /></p>
+  </li>
+  <li>샤드(Shard)<br />
+일종의 파티션으로서, 데이터를 저장할때 나누어진 부분. 1copy는 primary shard. 각 샤드 자체가 온전한 색인의 기능을 함.</li>
+  <li>레플리카(Replica)<br />
+Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존재함. RAID와 비슷한 개념 기본갯수: 2개 노드에  Primary shard 5개, Replica shard 5개</li>
+  <li>흔히, 엘라스틱 서치라고 하는데, 일레스틱 서치가 정확한 발음.</li>
+</ul>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/coding'>Coding</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 30 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/google-inception-model"><h3>구글 이미지 학습(Inception)</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/git-from-hell"><h3>지옥에서온 Git</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/elastic-search-query"><h3>Elastic search 쿼리</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/css-with-superpowers"><h3>CSS with Superpowers</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/why-react-js-will-change-the-world"><h3>Why React JS Will Change the World</h3></a>
+                </div>
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Jul 7, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/coding'>Coding</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/coding'>Coding</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/elastic-search-basic"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/elastic-search-basic"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/elastic-search-basic"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>

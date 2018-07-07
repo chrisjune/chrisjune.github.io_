@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tom_blog</title>
+    <description>tech blog
+</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 08 Jul 2018 04:09:06 +0900</pubDate>
+    <lastBuildDate>Sun, 08 Jul 2018 04:09:06 +0900</lastBuildDate>
+    <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>구글 이미지 학습(Inception)</title>
+        <description>&lt;p&gt;Google V3 Inception 모델을 활용한 이미지학습에 대한 소개&lt;/p&gt;
+
+&lt;h2 id=&quot;classify하려는대상별로폴더생성&quot;&gt;Classify 하려는 대상별로 폴더생성&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;root 폴더 / 모델명 폴더 / 카테고리별 폴더 별로 생성한다&lt;/li&gt;
+  &lt;li&gt;예) /workspace/animal/cat, /workspace/animal/dog, workspace/animal/tiger&lt;/li&gt;
+  &lt;li&gt;최소한 35개 이상의 이미지필요&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;inception-model-다운로드&quot;&gt;Inception model 다운로드&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-LO&lt;/span&gt; https://raw.githubusercontent.com/golbin/TensorFlow-Tutorials/master/11%20-%20Inception/retrain.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;인셉션-모델을-활용한-이미지-트레이닝&quot;&gt;인셉션 모델을 활용한 이미지 트레이닝&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;모델 학습시키기 위한 명령어
+    &lt;pre&gt;&lt;code class=&quot;language-command&quot;&gt; python retrain.py \    
+--bottleneck_dir=./[root폴더]/bottlenecks \
+--model_dir=./[root폴더]/inception \
+--output_graph=./[root폴더]/[모델폴더명].pb \
+--output_labels=./[root폴더]/[모델폴더명].txt \
+--image_dir .[root폴더]/[모델폴더명] \
+--how_many_training_steps [학습횟수]
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;example
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python retrain.py \    
+--bottleneck_dir=./workspace/bottlenecks \
+--model_dir=./workspace/inception \
+--output_graph=./workspace/animal.pb \
+--output_labels=./workspace/animal.txt \
+--image_dir ./workspace/animal \
+--how_many_training_steps 1000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;모델평가&quot;&gt;모델평가&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;모델 평가 프로그램 다운로드
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-LO&lt;/span&gt; https://raw.githubusercontent.com/golbin/TensorFlow-Tutorials/master/11%20-%20Inception/predict.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;파일내 경로 수정&lt;br /&gt;
+python predict.py [파일명]&lt;/li&gt;
+  &lt;li&gt;matplotlib backend 에러 처리&lt;br /&gt;
+http://dukwon.tistory.com/30&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sat, 07 Jul 2018 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/google-inception-model</link>
+        <guid isPermaLink="true">http://localhost:4000/google-inception-model</guid>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>지옥에서온 Git</title>
+        <description>&lt;p&gt;깃의 사용방법과 여러 명령어의 활용방법을 알아본다&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;해당 내용은 &lt;a href=&quot;https://opentutorials.org/course/2708&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;생활코딩&lt;/code&gt;&lt;/a&gt;을 참고하였습니다&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;프로젝트-만들기&quot;&gt;프로젝트 만들기&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;현재의 디렉토리 git의 저장소로 만들기
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mkdir gitfth
+cd gitfth ; git init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;관리대상등록&quot;&gt;관리대상등록&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;git이 파일을 추적할 수 있도록 명령
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git add [file name]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;폴더의 상태를 확인
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git status
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;정보설정&quot;&gt;정보설정&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;닉네이설정
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global user.name &quot;자신의 닉네임&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;이메일설정
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config --global user.email &quot;자신의 이메일&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;stage-area&quot;&gt;Stage area&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;스테이지: 커밋 대기할 파일들이 가는 곳&lt;/li&gt;
+  &lt;li&gt;레파지토리: 스테이지에서 커밋된 파일들이 있는 곳, 커밋을 하면 스테이지 위에있는 파일만 처리됨&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;로그비교&quot;&gt;로그비교&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;로그에서 출력되는 버전간 차이점을 출력하고 싶을 때
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git log -p
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;버전간의 차이점을 비교할 때
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git diff 'ver1' 'ver2'
+git add 전/후의 파일 내용을 비교할 때
+git diff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reset-vs-revert&quot;&gt;Reset vs Revert&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;과거시간으로 가버리기(타임머신)
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git reset [version]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;단, push후 reset은 절대 하면 안됨!!&lt;/li&gt;
+  &lt;li&gt;수정하여 커밋하기&lt;/li&gt;
+  &lt;li&gt;git revert [version]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;git-add-할때&quot;&gt;Git Add 할때&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;index에 주소, 파일명 정보가 들어있고&lt;/li&gt;
+  &lt;li&gt;실제 파일내용은 objects/하위에 담겨있다&lt;/li&gt;
+  &lt;li&gt;git은 파일내용이 동일하면 내부적으로 동일한 객체로 취급한다&lt;/li&gt;
+  &lt;li&gt;그 이유는 파일내용을 -&amp;gt; sha1 해쉬알고리즘 encoding한 값이 동일할 때, 같은 것으로 취급하기 때문이다&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;git-commit-할때&quot;&gt;Git commit 할때&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;commit도 객체로 내부처리된다&lt;/li&gt;
+  &lt;li&gt;커밋을 하면 스테이지 위에있는 파일만 처리됨&lt;/li&gt;
+  &lt;li&gt;object의 종류&lt;/li&gt;
+  &lt;li&gt;blob -&amp;gt; tree -&amp;gt; commit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;git-branch&quot;&gt;Git Branch&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;고객에게 특별한 custom 기능을 추가할때&lt;/li&gt;
+  &lt;li&gt;나중에 쉽게 빼기 좋은 기능을 추가할때&lt;/li&gt;
+  &lt;li&gt;여러가지 개발된 내용을 통합하여 테스트할때&lt;/li&gt;
+  &lt;li&gt;git log –branches –decorate –graph&lt;/li&gt;
+  &lt;li&gt;git log –branches –decorate –graph –oneline&lt;/li&gt;
+  &lt;li&gt;master 엔 있고 exp엔 없는 것들 git log exp..master&lt;/li&gt;
+  &lt;li&gt;master엔 없고 exp엔 있는 것들 git log master..exp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;git-merge&quot;&gt;Git Merge&lt;/h2&gt;
+&lt;h3 id=&quot;기본개념&quot;&gt;기본개념&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;A로 B브랜치를 병합할때, 다른 branch를 내쪽으로 당겨온다고 생각하면 됨&lt;/li&gt;
+  &lt;li&gt;A &amp;lt;- B&lt;/li&gt;
+  &lt;li&gt;git checkout A&lt;/li&gt;
+  &lt;li&gt;git merge B
+    &lt;h3 id=&quot;fast-forward-vs-merge-recursive&quot;&gt;Fast-forward vs Merge recursive&lt;/h3&gt;
+  &lt;/li&gt;
+  &lt;li&gt;fast-forward: 빨리감기&lt;/li&gt;
+  &lt;li&gt;브랜치 이후로 별도의 마스터 커밋이 없을때 이루어짐.&lt;/li&gt;
+  &lt;li&gt;master의 head가 바뀌고 별도의 머지커밋이 생성되지 않음
+    &lt;h3 id=&quot;merge-recursive-자동머지&quot;&gt;Merge Recursive: 자동머지&lt;/h3&gt;
+  &lt;/li&gt;
+  &lt;li&gt;여러 브랜치에서 하나의 파일을 수정하더라도 수정된 위치가 겹치지 않으면&lt;/li&gt;
+  &lt;li&gt;하나의 파일로 자동머지됨. (3-way)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 07 Jul 2018 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/git-from-hell</link>
+        <guid isPermaLink="true">http://localhost:4000/git-from-hell</guid>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Elastic search 쿼리</title>
+        <description>&lt;p&gt;elastic search의 기본적인 쿼리방법을 알아본다&lt;/p&gt;
+
+&lt;h2 id=&quot;es에-있는-index들을-가져옴&quot;&gt;ES에 있는 index들을 가져옴&lt;/h2&gt;
+&lt;p&gt;GET _cat/indices&lt;/p&gt;
+
+&lt;h2 id=&quot;match_all-검색조건없이-모든-내용-검색&quot;&gt;match_all: 검색조건없이 모든 내용 검색&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;“_source”: select에서 보여줄 컬럼값들
+    &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/dev-product/_search&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match_all&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{}},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;_source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sell_price&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;item_stock_status&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;특정-인덱스에서-검색&quot;&gt;특정 인덱스에서 검색&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;match: where조건과 같이 특정 조건을 넣어 검색&lt;/li&gt;
+  &lt;li&gt;검색된 결과중 Item_name만 출력
+    &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/dev-product/_search&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sell_price&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;_source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;item_name&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;특정-index에서-쿼리하기&quot;&gt;특정 index에서 쿼리하기.&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;bool은 조건을 여러게 넣을 수 있도록 해줌&lt;/li&gt;
+  &lt;li&gt;must: 모두 만족해야하는 and조건&lt;/li&gt;
+  &lt;li&gt;should: 조건중 하나만 만족하면 되는 or조건&lt;/li&gt;
+  &lt;li&gt;판매가격이 만원또는 5만원인 상품중 카테고리가 가방이 아닌 상품검색
+    &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;dev-product/_search&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bool&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;should&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sell_price&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sell_price&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;must_not&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;category_keyword&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;가방&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;_source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;item_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sell_price&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;filter조건에서는-range로-판매가격의-범위를-지정할-수-있음&quot;&gt;filter조건에서는 range로 판매가격의 범위를 지정할 수 있음&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;판매가격이 2천원에서 2만원사이인 상품을 조회
+    &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/dev-product/_search&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bool&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;must&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match_all&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;filter&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;range&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sell_price&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;gte&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;lte&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 07 Jul 2018 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/elastic-search-query</link>
+        <guid isPermaLink="true">http://localhost:4000/elastic-search-query</guid>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>Elastic search</title>
+        <description>&lt;p&gt;엘라스틱서치의 개념과 용어에 대해 알아본다&lt;/p&gt;
+
+&lt;h2 id=&quot;분산형-restful-검색-및-분석-엔진&quot;&gt;분산형 RESTful 검색 및 분석 엔진&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;스키마에 자유로운 JSON 문서와 분산 검색을 제공함&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;rest-api형식&quot;&gt;REST API형식&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;curl -XPUT, XGET, XDELETE, XOPST http://host:port/(index)/(type)/(id)&lt;/li&gt;
+  &lt;li&gt;id가 존재하지 않으면, 자동으로 생성됨&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;필수-용어-및-개념&quot;&gt;필수 용어 및 개념&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;NTR(Near Time Realtime): 색인부터 검색이 실제로 가능해지는 시점까지 시간(보통 1초)&lt;/li&gt;
+  &lt;li&gt;클러스터&lt;br /&gt;
+하나이상의 노트(서버)의 집합. 노드는 클러스터에 Assign할 때 이름을 참조하기 때문에 클러스터 명은 고유하게 짓는다. 기본이름: Elastic search&lt;/li&gt;
+  &lt;li&gt;노드&lt;br /&gt;
+단일서버로서 클러스터 안에 속해있다. 기본적으로  elasticsearch라는 이름의 클러스터에 자동으로 형성되어 일부가 된다. 기본이름: UUID(Universal unique IDentifier)&lt;/li&gt;
+  &lt;li&gt;Index - Database, Type - Table, Document - Row  
+    &lt;h2 id=&quot;rdbms-과-elastic-search-비교&quot;&gt;RDBMS 과 Elastic search 비교&lt;/h2&gt;
+    &lt;p&gt;&lt;img src=&quot;../img/post-assets/database-elastic.png&quot; alt=&quot;database vs elastic search&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;샤드(Shard)&lt;br /&gt;
+일종의 파티션으로서, 데이터를 저장할때 나누어진 부분. 1copy는 primary shard. 각 샤드 자체가 온전한 색인의 기능을 함.&lt;/li&gt;
+  &lt;li&gt;레플리카(Replica)&lt;br /&gt;
+Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존재함. RAID와 비슷한 개념 기본갯수: 2개 노드에  Primary shard 5개, Replica shard 5개&lt;/li&gt;
+  &lt;li&gt;흔히, 엘라스틱 서치라고 하는데, 일레스틱 서치가 정확한 발음.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 07 Jul 2018 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/elastic-search-basic</link>
+        <guid isPermaLink="true">http://localhost:4000/elastic-search-basic</guid>
+        
+        
+        <category>coding</category>
+        
+      </item>
+    
+      <item>
+        <title>CSS with Superpowers</title>
+        <description>&lt;p&gt;Sass is completely compatible with all versions of CSS. We take this compatibility seriously, so that you can seamlessly use any available CSS libraries.&lt;/p&gt;
+
+&lt;p&gt;Sass boasts more features and abilities than any other CSS extension language out there. The Sass Core Team has worked endlessly to not only keep up, but stay ahead.&lt;/p&gt;
+
+&lt;h2 id=&quot;mature&quot;&gt;Mature&lt;/h2&gt;
+&lt;p&gt;Sass has been actively supported for about 8 years by its loving Core&lt;/p&gt;
+
+&lt;h2 id=&quot;team&quot;&gt;Team&lt;/h2&gt;
+&lt;p&gt;Over and over again, the industry is choosing Sass as the premier CSS extension language.&lt;/p&gt;
+
+&lt;h2 id=&quot;large-community&quot;&gt;Large Community&lt;/h2&gt;
+&lt;p&gt;Sass is actively supported and developed by a consortium of several tech companies and hundreds of developers.&lt;/p&gt;
+
+&lt;h2 id=&quot;frameworks&quot;&gt;Frameworks&lt;/h2&gt;
+&lt;p&gt;There are endless number of frameworks built with Sass. Compass, Bourbon, and Susy just to name a few.&lt;/p&gt;
+
+&lt;p&gt;Dreamcatcher cold-pressed American Apparel, post-ironic Carles Shoreditch craft beer Banksy PBR retro distillery before they sold out freegan asymmetrical kogi. Food truck Schlitz direct trade, deep v ethical yr sriracha mumblecore freegan. Tattooed occupy pork belly, letterpress typewriter cold-pressed viral swag farm-to-table flexitarian. +1 hashtag put a bird on it authentic. 3 wolf moon locavore Vice, normcore actually meggings leggings cornhole brunch. Four loko vinyl trust fund, Intelligentsia wolf Bushwick lo-fi sriracha. Deep v vegan forage selvage.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 11 Feb 2015 17:50:28 +0900</pubDate>
+        <link>http://localhost:4000/css-with-superpowers</link>
+        <guid isPermaLink="true">http://localhost:4000/css-with-superpowers</guid>
+        
+        
+        <category>coding</category>
+        
+        <category>css</category>
+        
+      </item>
+    
+      <item>
+        <title>Why React JS Will Change the World</title>
+        <description>&lt;p&gt;React components implement a &lt;code class=&quot;highlighter-rouge&quot;&gt;render()&lt;/code&gt; method that takes input data and returns what to display. This example uses an XML-like syntax called JSX. Input data that is passed into the component can be accessed by &lt;code class=&quot;highlighter-rouge&quot;&gt;render()&lt;/code&gt; via &lt;code class=&quot;highlighter-rouge&quot;&gt;this.props&lt;/code&gt;.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;build/react.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;build/JSXTransformer.js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;example&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/jsx&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;React&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Hello&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;world&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/h1&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,
+&lt;/span&gt;        &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'example'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;function&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;want-commonjs&quot;&gt;Want CommonJS?&lt;/h2&gt;
+&lt;p&gt;If you want to use React with browserify, webpack, or another CommonJS-compatible module system, just use the react npm package. In addition, the jsx build tool can be integrated into most packaging systems (not just CommonJS) quite easily.&lt;/p&gt;
+
+&lt;h2 id=&quot;next-steps&quot;&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;Check out the tutorial and the other examples in the starter kit’s examples directory to learn more.&lt;/p&gt;
+
+&lt;p&gt;We also have a wiki where the community contributes with workflows, UI-components, routing, data management etc.&lt;/p&gt;
+
+&lt;p&gt;Good luck, and welcome!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 10 Feb 2015 00:00:00 +0900</pubDate>
+        <link>http://localhost:4000/why-react-js-will-change-the-world</link>
+        <guid isPermaLink="true">http://localhost:4000/why-react-js-will-change-the-world</guid>
+        
+        
+        <category>coding</category>
+        
+        <category>js</category>
+        
+      </item>
+    
+  </channel>
+</rss>

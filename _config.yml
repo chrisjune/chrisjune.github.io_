@@ -1,0 +1,21 @@
+# Site settings
+title: tom_blog
+email: chrisjune2701@gmail.com
+description: > # Writer Theme is a responsive template
+ tech blog
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://chrisjune.github.io/" # the base hostname & protocol for your site
+enable_retina: false
+permalink: :title
+nav_list:
+  Home : ['Home', '/', 'fa-home']
+  About : ['About', '/about', 'fa-anchor']
+  Contact : ['Contact', '/contact', 'fa-plane']
+  Author : ['Author', '/author/tom', 'fa-user']
+single_footer: '<p>The writer community loves your content. Writer &copy; 2018 <a href="/">latest posts</a></p>'
+footer_links:
+    About: ['About', '/about']
+    Writer: ['Writer 2018', '/about']
+
+# Build settings
+markdown: kramdown

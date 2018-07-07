@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>tom_blog | 구글 이미지 학습(Inception)</title>
+    <meta name="description" content="Google V3 Inception 모델을 활용한 이미지학습에 대한 소개">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/google-inception-model">
+    <link rel="alternate" type="application/rss+xml" title="tom_blog" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-water.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>구글 이미지 학습(Inception)</h1>
+
+            <p>Google V3 Inception 모델을 활용한 이미지학습에 대한 소개</p>
+
+<h2 id="classify하려는대상별로폴더생성">Classify 하려는 대상별로 폴더생성</h2>
+<ul>
+  <li>root 폴더 / 모델명 폴더 / 카테고리별 폴더 별로 생성한다</li>
+  <li>예) /workspace/animal/cat, /workspace/animal/dog, workspace/animal/tiger</li>
+  <li>최소한 35개 이상의 이미지필요</li>
+</ul>
+
+<h2 id="inception-model-다운로드">Inception model 다운로드</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-LO</span> https://raw.githubusercontent.com/golbin/TensorFlow-Tutorials/master/11%20-%20Inception/retrain.py
+</code></pre></div></div>
+
+<h2 id="인셉션-모델을-활용한-이미지-트레이닝">인셉션 모델을 활용한 이미지 트레이닝</h2>
+<ul>
+  <li>모델 학습시키기 위한 명령어
+    <pre><code class="language-command"> python retrain.py \    
+--bottleneck_dir=./[root폴더]/bottlenecks \
+--model_dir=./[root폴더]/inception \
+--output_graph=./[root폴더]/[모델폴더명].pb \
+--output_labels=./[root폴더]/[모델폴더명].txt \
+--image_dir .[root폴더]/[모델폴더명] \
+--how_many_training_steps [학습횟수]
+</code></pre>
+  </li>
+  <li>example
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python retrain.py \    
+--bottleneck_dir=./workspace/bottlenecks \
+--model_dir=./workspace/inception \
+--output_graph=./workspace/animal.pb \
+--output_labels=./workspace/animal.txt \
+--image_dir ./workspace/animal \
+--how_many_training_steps 1000
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="모델평가">모델평가</h2>
+<ol>
+  <li>모델 평가 프로그램 다운로드
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-LO</span> https://raw.githubusercontent.com/golbin/TensorFlow-Tutorials/master/11%20-%20Inception/predict.py
+</code></pre></div>    </div>
+  </li>
+  <li>파일내 경로 수정<br />
+python predict.py [파일명]</li>
+  <li>matplotlib backend 에러 처리<br />
+http://dukwon.tistory.com/30</li>
+</ol>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/coding'>Coding</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 30 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/git-from-hell"><h3>지옥에서온 Git</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/elastic-search-query"><h3>Elastic search 쿼리</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/elastic-search-basic"><h3>Elastic search</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/css-with-superpowers"><h3>CSS with Superpowers</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/why-react-js-will-change-the-world"><h3>Why React JS Will Change the World</h3></a>
+                </div>
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Jul 7, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/coding'>Coding</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/coding'>Coding</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/google-inception-model"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/google-inception-model"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/google-inception-model"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>
