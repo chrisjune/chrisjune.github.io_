@@ -8,7 +8,7 @@ author_url : /author/tom
 author_avatar: tom
 show_avatar : true
 read_time : 30
-feature_image: feature-water
+feature_image: feature-san-fran
 show_related_posts: false
 square_related: recommend-spain
 ---
