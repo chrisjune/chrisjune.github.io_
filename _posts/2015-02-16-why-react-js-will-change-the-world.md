@@ -6,10 +6,10 @@ categories: coding js
 author_name : Tomas
 author_url : /author/tom
 author_avatar: tom
-show_avatar : true
+show_avatar : false
 read_time : 22
 feature_image: feature-water
-show_related_posts: false
+show_related_posts: true
 square_related: recommend-spain
 ---
 

@@ -6,10 +6,10 @@ categories: coding
 author_name : Tomas
 author_url : /author/tom
 author_avatar: tom
-show_avatar : true
+show_avatar : false
 read_time : 30
 feature_image: feature-san-fran
-show_related_posts: false
+show_related_posts: true
 square_related: recommend-spain
 ---
 Google V3 Inception 모델을 활용한 이미지학습에 대한 소개

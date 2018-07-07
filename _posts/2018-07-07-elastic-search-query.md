@@ -6,10 +6,10 @@ categories: coding
 author_name : Tomas
 author_url : /author/tom
 author_avatar: tom
-show_avatar : true
+show_avatar : false
 read_time : 30
 feature_image: feature-water
-show_related_posts: false
+show_related_posts: true
 square_related: recommend-spain
 ---
 elastic search의 기본적인 쿼리방법을 알아본다 
