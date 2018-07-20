@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>톰의 삽질로그 | Elastic search</title>
-    <meta name="description" content="엘라스틱서치의 개념과 용어에 대해 알아본다">
+    <title>톰의 삽질로그 | 장고 - Regex 정규식</title>
+    <meta name="description" content="askdjango를 참고하였습니다">
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/elastic-search-basic">
+    <link rel="canonical" href="http://localhost:4000/django-3-regex">
     <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
 
     <!--[if lt IE 9]>
@@ -22,7 +22,7 @@
 
   <body class="">
 
-    <header class="hero-image" style='background-image: url(/img/feature-water.jpg);'>
+    <header class="hero-image" style='background-image: url(/img/feature-san-fran.jpg);'>
     <span class="menu-trigger animated fadeInDown">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -67,37 +67,42 @@
     <div class="row">
         <div class="col-xs-12 col-md-8 single-content-sidebar">
 
-            <h1>Elastic search</h1>
+            <h1>장고 - Regex 정규식</h1>
 
-            <p>엘라스틱서치의 개념과 용어에 대해 알아본다</p>
+            <p><code class="highlighter-rouge">askdjango</code>를 참고하였습니다</p>
 
-<h2 id="분산형-restful-검색-및-분석-엔진">분산형 RESTful 검색 및 분석 엔진</h2>
+<h3 id="정규식-패턴">정규식 패턴</h3>
 <ul>
-  <li>스키마에 자유로운 JSON 문서와 분산 검색을 제공함</li>
-</ul>
-
-<h2 id="rest-api형식">REST API형식</h2>
-<ul>
-  <li>curl -XPUT, XGET, XDELETE, XOPST http://host:port/(index)/(type)/(id)</li>
-  <li>id가 존재하지 않으면, 자동으로 생성됨</li>
-</ul>
-
-<h2 id="필수-용어-및-개념">필수 용어 및 개념</h2>
-<ul>
-  <li>NTR(Near Time Realtime): 색인부터 검색이 실제로 가능해지는 시점까지 시간(보통 1초)</li>
-  <li>클러스터<br />
-하나이상의 노트(서버)의 집합. 노드는 클러스터에 Assign할 때 이름을 참조하기 때문에 클러스터 명은 고유하게 짓는다. 기본이름: Elastic search</li>
-  <li>노드<br />
-단일서버로서 클러스터 안에 속해있다. 기본적으로  elasticsearch라는 이름의 클러스터에 자동으로 형성되어 일부가 된다. 기본이름: UUID(Universal unique IDentifier)</li>
-  <li>Index - Database, Type - Table, Document - Row  
-    <h2 id="rdbms-과-elastic-search-비교">RDBMS 과 Elastic search 비교</h2>
-    <p><img src="../img/post-assets/database-elastic.png" alt="database vs elastic search" /></p>
+  <li>[]: 한문자를 의미</li>
+  <li>[0-9] : \d</li>
+  <li>[0-9a-fA-F] : 16진수 한글자</li>
+  <li>[ㄱ-힣] : 한글 한글자</li>
+  <li>ord()함수: 문자열의 ascii값</li>
+  <li>r’’ :raw의 뜻으로, 이스케이프문자를 자동으로 변환해줌 \d -&gt; \d</li>
+  <li>횟수
+    <ul>
+      <li>0 또는 1 : ?</li>
+      <li>0 회 이상: *</li>
+      <li>1 회 이상: +</li>
+      <li>m 회 : {m}</li>
+    </ul>
   </li>
-  <li>샤드(Shard)<br />
-일종의 파티션으로서, 데이터를 저장할때 나누어진 부분. 1copy는 primary shard. 각 샤드 자체가 온전한 색인의 기능을 함.</li>
-  <li>레플리카(Replica)<br />
-Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존재함. RAID와 비슷한 개념 기본갯수: 2개 노드에  Primary shard 5개, Replica shard 5개</li>
-  <li>흔히, 엘라스틱 서치라고 하는데, 일레스틱 서치가 정확한 발음.</li>
+</ul>
+
+<h3 id="장고-url패턴">장고 URL패턴</h3>
+<ul>
+  <li>r’^(?P<id>\d+)/$ : /10/</id></li>
+  <li>(?P): 영역의 정규표현식을 적용할 것을 의미</li>
+  <li>
+    <x> : x라는 변수명으로 인자를 보냄
+</x>
+  </li>
+  <li>뷰 인자로 받는 모든 값은 문자열 타입</li>
+  <li>url(r’^sum/(?P<x>\d+)/(?P<y>\d+)$',views.ts):
+</y></x>    <ul>
+      <li>/sum/10/20</li>
+    </ul>
+  </li>
 </ul>
 
 
@@ -109,11 +114,11 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
             <div class="meta">
 
                 <div class="sidebar-info">
-                    <a href="/author/tom">Tomas</a> in <a href='category/coding'>Coding</a>
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
                 </div>
 
                 <div class="sidebar-readtime">
-                    <i class="fa fa-bookmark"></i> 30 minute read
+                    <i class="fa fa-bookmark"></i> 4 minute read
                 </div>
 
             </div>
@@ -135,12 +140,6 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
             
                 
                 <div class="similar-post">
-                    <a href="/django-3-regex"><h3>장고 - Regex 정규식</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
                     <a href="/google-inception-model"><h3>구글 이미지 학습(Inception)</h3></a>
                 </div>
                 
@@ -148,6 +147,12 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
                 
                 <div class="similar-post">
                     <a href="/git-from-hell"><h3>지옥에서온 Git</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/elastic-search-query"><h3>Elastic search 쿼리</h3></a>
                 </div>
                 
             
@@ -172,7 +177,7 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
         <div class="col-xs-12 col-sm-6">
             <div class="category-list">
                 <p>Published <span>Jul 7, 2018</span></p>
-                <p><a href="/author/tom">Tomas</a> in <a href='/category/coding'>Coding</a></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
 
                 <div class="other-catergories">
                     <h3>Also found in</h3>
@@ -180,7 +185,7 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
                     <ul>
                         
                         <li>
-                            <a href='/category/coding'>Coding</a>
+                            <a href='/category/django'>Django</a>
                             
                         </li>
                         
@@ -193,10 +198,10 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/elastic-search-basic"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/django-3-regex"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/elastic-search-basic"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/elastic-search-basic"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/django-3-regex"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/django-3-regex"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -223,14 +228,6 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
         
     
         
-        <a href="/django-3-regex"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-spain.jpg'>
-            <h3 class="read-another">장고 - Regex 정규식</h3>
-        </div></a>
-        
-    
-        
         <a href="/google-inception-model"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
             <div class="overlay"></div>
             <img src='/img/recommend-spain.jpg'>
@@ -251,6 +248,14 @@ Primary shard의 복제본으로서, 검색성능과 장애복구를 위해 존�
             <div class="overlay"></div>
             <img src='/img/recommend-spain.jpg'>
             <h3 class="read-another">Elastic search 쿼리</h3>
+        </div></a>
+        
+    
+        
+        <a href="/elastic-search-basic"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">Elastic search</h3>
         </div></a>
         
     

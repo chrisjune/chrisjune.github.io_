@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>톰의 삽질로그 | 장고 - View</title>
+    <meta name="description" content="askdjango를 참고하였습니다View  urlconf에 매핑된 object  첫인자로 httpresquest를 받고,  반드시 httpresponse를 리턴해야한다.">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/django-4-view">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-san-fran.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-anchor"></i><a href="/about">About</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>장고 - View</h1>
+
+            <p><code class="highlighter-rouge">askdjango</code>를 참고하였습니다</p>
+<h3 id="view">View</h3>
+<ul>
+  <li>urlconf에 매핑된 object</li>
+  <li>첫인자로 httpresquest를 받고,</li>
+  <li>반드시 httpresponse를 리턴해야한다.</li>
+</ul>
+
+<h3 id="fbvfunction-based-view">FBV(function based view)</h3>
+<ul>
+  <li>엑셀다운로드 예제</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">JsonResponse</span>
+<span class="k">def</span> <span class="nf">post_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+	<span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+		<span class="s">'message'</span><span class="p">:</span> <span class="s">'hi django'</span><span class="p">,</span>
+		<span class="s">'items'</span><span class="p">:</span> <span class="p">[</span><span class="s">'python'</span><span class="p">,</span><span class="s">'dj'</span><span class="p">,</span><span class="s">'celer'</span><span class="p">],</span>
+	<span class="p">},</span> <span class="n">json_dumps_params</span><span class="o">=</span><span class="p">{</span><span class="s">'ensure_ascii'</span><span class="p">:</span><span class="bp">False</span><span class="p">})</span>
+</code></pre></div></div>
+
+<ul>
+  <li>엑셀다운로드 예제2</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">JsonResponse</span>
+<span class="k">def</span> <span class="nf">excep_download</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+	<span class="n">filepath</span><span class="o">=</span><span class="s">'/User/usr/excel.xsl'</span>
+	<span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+	
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">conetent_type</span><span class="o">=</span><span class="s">'application/vnd.ms-excel'</span><span class="p">)</span>
+		<span class="n">response</span><span class="p">[</span><span class="s">'Content-Disposition'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'attachment; filename="{}"'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">response</span>
+</code></pre></div></div>
+
+<h3 id="cbvclass-based-view">CBV(class based view)</h3>
+<ul>
+  <li>django.views.generic: 뷰사용패턴을 일반화 시켜놓은 뷰의 모음</li>
+  <li>
+    <p>as_view(): 클래스를 통해 호출되는 함수를 통해 FBV(Function based view)를 생성해주는 클래스</p>
+  </li>
+  <li>CBV 예제</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="k">class</span> <span class="nc">PostListView1</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+		<span class="n">name</span> <span class="o">=</span> <span class="s">'testname'</span>
+		<span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_template_string</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">get_tempalte_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s">"&lt;h1&gt;title&lt;/h1&gt;	&lt;p&gt;asdfasdf&lt;p&gt;"</span>
+</code></pre></div></div>
+
+<h3 id="템플릿뷰">템플릿뷰</h3>
+<ul>
+  <li>템플릿 뷰 예제</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">PostListView2</span><span class="p">(</span><span class="n">TemplateView</span><span class="p">):</span>
+	<span class="n">template_view</span><span class="o">=</span><span class="s">'app/post_list.html'</span>
+	<span class="k">def</span> <span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">context</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_context_data</span><span class="p">()</span>
+		<span class="n">context</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'testname'</span>
+		<span class="k">return</span> <span class="n">context</span>
+</code></pre></div></div>
+
+<ul>
+  <li>JsonResponse 템플릿뷰 예제</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="k">class</span> <span class="nc">PostListView3</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_data</span><span class="p">(),</span> 		<span class="n">json_dumps_params</span><span class="o">=</span><span class="p">{</span><span class="s">'ensure_ascii'</span><span class="p">:</span><span class="bp">False</span><span class="p">})</span>
+	
+	<span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">return</span> <span class="p">{</span>
+		<span class="s">'message'</span><span class="p">:</span><span class="s">'hi python'</span><span class="p">,</span>
+		<span class="s">'items'</span><span class="p">:</span> <span class="p">[</span><span class="s">'python'</span><span class="p">,</span><span class="s">'dj'</span><span class="p">,</span><span class="s">'celery'</span><span class="p">,</span><span class="s">'azure'</span><span class="p">,</span><span class="s">'aws'</span><span class="p">]</span>
+	<span class="p">}</span>
+<span class="n">post_list3</span> <span class="o">=</span> <span class="n">PostListView3</span><span class="p">()</span><span class="o">.</span><span class="n">as_view</span><span class="p">()</span>
+</code></pre></div></div>
+
+<ul>
+  <li>엑셀 다운로드 예제</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="k">from</span> <span class="n">django</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">generic</span> <span class="n">improt</span> <span class="n">View</span>
+
+<span class="k">class</span> <span class="nc">ExcelDownlaodView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+	<span class="n">excep_path</span> <span class="o">=</span> <span class="s">'User/usr/excel.xls'</span>
+	
+	<span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">):</span>
+		<span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">excel_path</span><span class="p">)</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="n">reponse</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_type</span> <span class="o">=</span> <span class="s">'application/vnd.ms-excel'</span><span class="p">)</span>
+			<span class="n">response</span><span class="p">[</span><span class="s">'Content-Disposition'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'attachment; filename="{}"'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">response</span>
+</code></pre></div></div>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 15 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/encoding-and-decoding"><h3>인코딩과 디코딩 한번에 정리!</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/django-3-regex"><h3>장고 - Regex 정규식</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/google-inception-model"><h3>구글 이미지 학습(Inception)</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/git-from-hell"><h3>지옥에서온 Git</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/elastic-search-query"><h3>Elastic search 쿼리</h3></a>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Jul 7, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/django'>Django</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/django-4-view"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/django-4-view"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/django-4-view"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+        <div class="row read-another-section">
+    
+        
+        <a href="/encoding-and-decoding"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-sunset.jpg'>
+            <h3 class="read-another">인코딩과 디코딩 한번에 정리!</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-3-regex"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - Regex 정규식</h3>
+        </div></a>
+        
+    
+        
+        <a href="/google-inception-model"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">구글 이미지 학습(Inception)</h3>
+        </div></a>
+        
+    
+        
+        <a href="/git-from-hell"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">지옥에서온 Git</h3>
+        </div></a>
+        
+    
+        
+        <a href="/elastic-search-query"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">Elastic search 쿼리</h3>
+        </div></a>
+        
+    
+        
+        <a href="/elastic-search-basic"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">Elastic search</h3>
+        </div></a>
+        
+    
+        
+    
+        
+    
+</div>
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>

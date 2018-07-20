@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+    <url>
+        <loc>http://localhost:4000/encoding-and-decoding</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/django-4-view</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/django-3-regex</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/google-inception-model</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/git-from-hell</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/elastic-search-query</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/elastic-search-basic</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/css-with-superpowers</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/why-react-js-will-change-the-world</loc>
+    </url>
+    
+
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/about/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/author/tom/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/contact/</loc>
+    </url>
+    
+    
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/home-alt-2/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/home-alt/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/leadership/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/django/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/travel/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/storytime/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/css/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/js/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/life/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/journey/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>http://localhost:4000/category/coding/</loc>
+    </url>
+    
+    
+    
+    
+    
+    
+    
+</urlset>
