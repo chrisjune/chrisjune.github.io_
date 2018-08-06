@@ -2,6 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>http://localhost:4000/drf-04-viewset-router</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-03-json-res-view</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-02-json-serialization</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-01-api-server</loc>
+    </url>
+    
+    <url>
         <loc>http://localhost:4000/encoding-and-decoding</loc>
     </url>
     

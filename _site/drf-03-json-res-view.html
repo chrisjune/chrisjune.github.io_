@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>톰의 삽질로그 | DRF 03 - JSON 응답뷰(APIView, ViewSet)</title>
+    <meta name="description" content="  Django Rest-framework에서 제공하는 APIView와 ViewSet에 대해 알아보고 Serialized 된 데이터를 View에 표현해본다">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/drf-03-json-res-view">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-wolf.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>DRF 03 - JSON 응답뷰(APIView, ViewSet)</h1>
+
+            <blockquote>
+  <p>Django Rest-framework에서 제공하는 APIView와 ViewSet에 대해 알아보고 Serialized 된 데이터를 View에 표현해본다</p>
+</blockquote>
+
+<h2 id="view">View</h2>
+<ul>
+  <li>Serializer의 데이터를 활용하여 HTTP요청을 처리한다</li>
+  <li>데이터 흐름: Model -&gt; Serializer -&gt; View</li>
+  <li>Serializer와 View 맛보기
+    <ul>
+      <li>Serializer
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">class</span> <span class="nc">PostSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+      <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+          <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
+          <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">'title'</span><span class="p">,</span> <span class="s">'content'</span><span class="p">]</span>
+</code></pre></div>        </div>
+      </li>
+      <li>View
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">serializer</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+      <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+      <span class="k">return</span> <span class="n">JsonResonse</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="apiview-활용하여-fbv-cbv-구현">APIView 활용하여 FBV, CBV 구현</h2>
+<ul>
+  <li>FBV는 구식, CBV는 신식이 아니라, 용도별로 구현방법이 다르다.</li>
+  <li>FBV(Function Based View): 특별한 뷰를 구현할 때 CBV보다 간단하다.
+    <ul>
+      <li><code class="highlighter-rouge">@api_view</code> 데코레이터를 활용하여 구현</li>
+    </ul>
+  </li>
+  <li>CBV: 여러 뷰를 통해 걸쳐 반복되는 루틴의 경우 구현시 유리하다.
+    <ul>
+      <li><code class="highlighter-rouge">APIView</code>를 상속하여 구현</li>
+    </ul>
+  </li>
+  <li>APIView 맛보기</li>
+  <li>APIView를 활용하여 CBV 맛보기</li>
+  <li><code class="highlighter-rouge">APIView.as_view()</code>에서 <code class="highlighter-rouge">csrf_exempt</code> 처리된 뷰를 만들어줌
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+  <span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
+  <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+  <span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">PostSerializer</span>
+
+  <span class="k">class</span> <span class="nc">PostListAPIView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+      <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+          <span class="n">serializer</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">(),</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+      <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+          <span class="n">serializer</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+              <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+              <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>@api_view를 활용하여 FBV 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">status</span><span class="p">,</span> <span class="n">Response</span>
+  <span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
+  <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+  <span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">PostSerializer</span>
+
+  <span class="nd">@csrf_exempt</span>
+  <span class="nd">@api_view</span><span class="p">([</span><span class="s">'GET'</span><span class="p">,</span> <span class="s">'POST'</span><span class="p">])</span>
+  <span class="k">def</span> <span class="nf">post_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+          <span class="n">serializer</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">(),</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="n">serializer</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+              <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+              <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <hr />
+  </li>
+</ul>
+
+<h2 id="mixin을-활용한-view-구현apiview-상속">Mixin을 활용한 View 구현(APIView 상속)</h2>
+<ul>
+  <li><code class="highlighter-rouge">APIView</code>를 직접 상속하여 구현시 중복로직이 발생한다.</li>
+  <li>따라서, 중복되는 부분을 미리 묶어놓은 <code class="highlighter-rouge">Mixin</code>(Create, List, Retrieve, Update, Destroy)을 지원해줌.</li>
+  <li>Mixin은 말그대로 섞어놓은 클래스 다른 기능은 없음</li>
+  <li><code class="highlighter-rouge">Mixin</code>을 활용한 CBV 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span>
+  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">mixins</span>
+
+  <span class="k">class</span> <span class="nc">PostListAPIView</span><span class="p">(</span><span class="n">mixins</span><span class="o">.</span><span class="n">ListModelMixin</span><span class="p">,</span> <span class="n">mixins</span><span class="o">.</span><span class="n">CreateModelMixin</span><span class="p">,</span>
+                  <span class="n">generics</span><span class="o">.</span><span class="n">GenericAPIView</span><span class="p">):</span>
+      <span class="n">queryset</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+      <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PostSerializer</span>
+
+      <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+      <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><code class="highlighter-rouge">Generics</code>를 활용한 CBV(여러 Mixin을 하나로 묶음)
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span>
+
+  <span class="k">class</span> <span class="nc">PostListAPIView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListCreateAPIView</span><span class="p">):</span>
+      <span class="n">queryset</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+      <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PostSerializer</span>
+</code></pre></div>    </div>
+    <hr />
+  </li>
+</ul>
+
+<h2 id="viewset을-활용하여-view-구현">Viewset을 활용하여 View 구현</h2>
+<ul>
+  <li><code class="highlighter-rouge">REST API</code>는 생성/목록조회, 상세조회/수정/삭제를 위해 각각의 URL(View)가 필요하다.</li>
+  <li>두개의 view는 동일한 serializer와 queryset을 지정하기 때문에 한번에 처리가능하도록</li>
+  <li>rest-framework에서는 ViewSet을 제공함.</li>
+  <li>ViewSet은 CBV가 아니라 2개의 뷰를 만들어주는 <code class="highlighter-rouge">헬퍼 클래스</code>
+    <ul>
+      <li><code class="highlighter-rouge">viewsets.ReadOnlyModelViewSet</code>
+        <ul>
+          <li>목록 조회, 특정 레코드 조회를 지원 =&gt; 2개의 URL 지원</li>
+        </ul>
+      </li>
+      <li><code class="highlighter-rouge">viewsets.ModelViewSet</code>
+        <ul>
+          <li>목록 조회, 생성, 특정 레코드 조회/수정/삭제 지원 =&gt; 2개의 URL 지원</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Router를 통해 일괄적으로 <code class="highlighter-rouge">URLConf</code>에 등록가능함</li>
+  <li>Viewset 맛보기</li>
+  <li>Views
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
+
+  <span class="k">class</span> <span class="nc">UserViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ReadOnlyModelViewSet</span><span class="p">):</span>
+      <span class="n">queryset</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+      <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">UserSerializer</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Urls
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework.routers</span> <span class="kn">import</span> <span class="n">DefaultRouter</span>
+
+  <span class="n">router</span> <span class="o">=</span> <span class="n">DefaultRouter</span><span class="p">()</span>
+  <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'user'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">UserViewSet</span><span class="p">)</span>
+
+  <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">url</span><span class="p">(</span><span class="s">r''</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+  <span class="p">]</span>
+</code></pre></div>    </div>
+    <hr />
+    <h2 id="apiview-클래스와-api_view장식자default-값">APIView 클래스와 api_view장식자(Default 값)</h2>
+  </li>
+  <li>직렬화 클래스 지정 : <code class="highlighter-rouge">renderer_classes</code> 속성 (list)
+    <ul>
+      <li><code class="highlighter-rouge">rest_framework.renderers.JSONRenderer</code> : JSON 직렬화</li>
+      <li><code class="highlighter-rouge">rest_framework.renderers.TemplateHTMLRenderer</code> : HTML 페이지 직렬화</li>
+    </ul>
+  </li>
+  <li>비직렬화 클래스 지정 : <code class="highlighter-rouge">parser_classes</code> 속성 (list)
+    <ul>
+      <li><code class="highlighter-rouge">rest_framework.parsers.JSONParser</code> : JSON 포맷 처리</li>
+      <li><code class="highlighter-rouge">rest_framework.parsers.FormParser</code></li>
+      <li><code class="highlighter-rouge">rest_framework.parsers.MultiPartParser</code></li>
+    </ul>
+  </li>
+  <li>인증 클래스 지정 : <code class="highlighter-rouge">authentication_classes</code> 속성 (list)
+    <ul>
+      <li><code class="highlighter-rouge">rest_framework.authentication.SessionAuthentication</code> : 세션에 기반한 인증</li>
+      <li><code class="highlighter-rouge">rest_framework.authentication.BasicAuthentication</code> : HTTP Basic 인증</li>
+    </ul>
+  </li>
+  <li>사용량 제한 클래스 지정 : <code class="highlighter-rouge">throttle_classes</code> 속성 (list)
+    <ul>
+      <li>디폴트 : 빈 튜플</li>
+    </ul>
+  </li>
+  <li>권한 클래스 지정 : <code class="highlighter-rouge">permission_classes</code> 속성 (list)
+    <ul>
+      <li><code class="highlighter-rouge">rest_framework.permissions.AllowAny</code> : 누구라도 접근 허용</li>
+    </ul>
+  </li>
+  <li>요청에 따라 적절한 직렬화/비직렬화 클래스를 선택 : <code class="highlighter-rouge">content_negotiation_class</code> 속성 (문자열)
+    <ul>
+      <li>같은 URL로의 요청이지만, JSON응답을 요구하는 것이냐 / HTML응답을 요구하는 것인지 판단</li>
+      <li><code class="highlighter-rouge">rest_framework.negotiation.DefaultContentNegotiation</code></li>
+    </ul>
+  </li>
+  <li>요청 내역에서 API 버전 정보를 탐지할 클래스 지정 : <code class="highlighter-rouge">versioning_class</code> 속성
+    <ul>
+      <li>디폴트 : <code class="highlighter-rouge">None</code> : API 버전 정보를 탐지하지 않겠다.</li>
+      <li>요청 URL에서, GET인자에서, HEADER에서 버전정보를 탐지하여, 해당 버전의 API뷰를 호출토록 합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>본 내용은 <a href="https://www.askcompany.kr/"><code class="highlighter-rouge">askDjango</code></a>강좌를 참고하였습니다</p>
+</blockquote>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 25 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-04-viewset-router"><h3>DRF 04 - Viewset과 Router</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-02-json-serialization"><h3>DRF 02 - JSON 직렬화</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-01-api-server"><h3>DRF 01 - API서버</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/encoding-and-decoding"><h3>인코딩과 디코딩 한번에 정리!</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/django-4-view"><h3>장고 - View</h3></a>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Aug 6, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/django'>Django</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-03-json-res-view"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-03-json-res-view"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-03-json-res-view"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+        <div class="row read-another-section">
+    
+        
+        <a href="/drf-04-viewset-router"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 04 - Viewset과 Router</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-02-json-serialization"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 02 - JSON 직렬화</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-01-api-server"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 01 - API서버</h3>
+        </div></a>
+        
+    
+        
+        <a href="/encoding-and-decoding"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-sunset.jpg'>
+            <h3 class="read-another">인코딩과 디코딩 한번에 정리!</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-4-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - View</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-3-regex"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - Regex 정규식</h3>
+        </div></a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>

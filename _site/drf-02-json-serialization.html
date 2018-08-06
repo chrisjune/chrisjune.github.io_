@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>톰의 삽질로그 | DRF 02 - JSON 직렬화</title>
+    <meta name="description" content="  데이터 직렬화(Serialization)의 개념을 이해하고, Serializer를 구현할 수 있다.">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/drf-02-json-serialization">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-wolf.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>DRF 02 - JSON 직렬화</h1>
+
+            <blockquote>
+  <p>데이터 직렬화(Serialization)의 개념을 이해하고, Serializer를 구현할 수 있다.</p>
+</blockquote>
+
+<h2 id="데이터-직렬화">데이터 직렬화</h2>
+<ul>
+  <li>모든 프로그램통신에서 데이터는 반드시 문자열로 표현되어야함.</li>
+  <li>보내는쪽: 객체데이터를 문자로 변환하여 전송
+    <ul>
+      <li>이를 직렬화 serializaion이라는 어려운 용어를 사용한다</li>
+    </ul>
+  </li>
+  <li>받는쪽: 받은 문자열을 다시 객체로 변환하여 활용
+    <ul>
+      <li>이를 역직렬화(Deserialization)이라고 한다</li>
+    </ul>
+  </li>
+  <li>모든 언어에서 XML, JSON을 지원하며, 최근 대부분API서버에서는 Json포멧을 활용</li>
+</ul>
+
+<h2 id="json">Json</h2>
+<ul>
+  <li>웹어플리케이션에서는 HTML포맷으로 통신</li>
+  <li>API서버는 주로 JSON포맷으로 통신</li>
+  <li>장고 API뷰에서도 JSON포맷을 사용</li>
+  <li>JSON: 타 언어, 플랫폼과 통신할 때 사용</li>
+  <li>PICKLE: 파이썬 전용 포맷, 파이썬 버전의 특성의 영향을 받음</li>
+  <li>문자열 직렬화 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">json</span>
+  <span class="nb">list</span> <span class="o">=</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span><span class="s">"value"</span><span class="p">}</span>
+
+  <span class="n">json_str</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+  <span class="o">&gt;</span> <span class="s">'{"key": "value"}'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>문자열 역직렬화 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">json</span>
+  <span class="nb">str</span> <span class="o">=</span> <span class="s">'{"key": "value"}'</span>
+  <span class="nb">list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+  <span class="o">&gt;</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"value"</span><span class="p">}</span>
+</code></pre></div>    </div>
+    <hr />
+  </li>
+</ul>
+
+<h2 id="django에서-json-직렬화">Django에서 JSON 직렬화</h2>
+<ul>
+  <li>장고에서는 표준라이브러리 json.JSONEncoder를 상속받아 <code class="highlighter-rouge">DjangoJSONEncoder</code>를 제공</li>
+  <li>QuerySet, Model인스턴스에 대한 직렬화는 불가능, for loop로 list를 직접 구현해줘야함</li>
+</ul>
+
+<h2 id="django-rest-framework에서-json-직렬화">Django Rest-framework에서 JSON 직렬화</h2>
+<ul>
+  <li>rest_framework.renderer.JSONRender는 json.JSONEncoder를 상속받아 직렬화 구현.</li>
+  <li><code class="highlighter-rouge">DjangoJSONEncoder</code>보다 많은 데이터 타입을 직렬화하지만 역시 Model, QueyrSet인스턴스의 직렬화 불가능</li>
+</ul>
+
+<h2 id="modelserializer">ModelSerializer</h2>
+<ul>
+  <li>QuerySet, Model을 JSONRenderer에서 변환 가능한 가능한 형태로 변환 장고의 ModelForm과 유사한 형태</li>
+  <li>Django Form/ModelForm 와 Serializer/ModelSerializer</li>
+  <li>모델에서 데이터를 읽는 다는 것과 입력된 데이터에 대한 유효성 검사하는 것이 동일하다</li>
+  <li>Form은 Form HTML을 생성, Serializer는 Json 문자열을 생성하는 것에서 차이가 있다.</li>
+  <li>ModelSerializer 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework.serializers</span> <span class="kn">import</span> <span class="n">ModelSerializer</span>
+
+  <span class="k">class</span> <span class="nc">PostSerializer</span><span class="p">(</span><span class="n">ModelSerializer</span><span class="p">):</span>
+      <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+          <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
+          <span class="n">fields</span> <span class="o">=</span> <span class="s">'__all__'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>직렬화된 데이터 활용 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">post_obj</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">first</span><span class="p">()</span> <span class="c"># 모델 인스턴스</span>
+  <span class="n">post</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">post_obj</span><span class="p">)</span>
+  <span class="n">post</span><span class="o">.</span><span class="n">data</span> <span class="c"># Ordered dict type</span>
+</code></pre></div>    </div>
+  </li>
+  <li>쿼리셋직렬화 맛보기
+    <ul>
+      <li>QuerySet은 ModelInstance의 집합이기 때문에, 직렬화시 may=True인자로 호출해야함
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">post_objs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+  <span class="n">post</span> <span class="o">=</span> <span class="n">PostSerializer</span><span class="p">(</span><span class="n">post_objs</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c"># QuerySet의 경우 many=True</span>
+</code></pre></div>        </div>
+        <hr />
+        <h2 id="view에서-직렬화된-데이터-활용">View에서 직렬화된 데이터 활용</h2>
+      </li>
+    </ul>
+  </li>
+  <li>JSON포멧을 직렬화된 데이터는 View를 통해서 응답이 이루어져야 한다</li>
+  <li>JsonResponse 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResonse</span>
+
+  <span class="n">response</span> <span class="o">=</span> <span class="n">JsonResponse</span><span class="p">(</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span>
+      <span class="n">encoder</span> <span class="o">=</span> <span class="n">DjangoJSONEncoder</span><span class="p">,</span>
+      <span class="n">safe</span> <span class="o">=</span> <span class="bp">False</span> <span class="c"># dict type체크를 목적(Dictionary: True, 이외 False)</span>
+      <span class="n">json_dumps_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">'ensure_ascii'</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span>
+      <span class="o">**</span><span class="n">kwargs</span>
+  <span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Rest-framework Response 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Resonse</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+  <span class="n">serializer</span> <span class="o">=</span> <span class="n">PostModelSerializer</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p>본 내용은 <a href="https://www.askcompany.kr/"><code class="highlighter-rouge">askDjango</code></a>강좌를 참고하였습니다</p>
+</blockquote>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 15 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-04-viewset-router"><h3>DRF 04 - Viewset과 Router</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-03-json-res-view"><h3>DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-01-api-server"><h3>DRF 01 - API서버</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/encoding-and-decoding"><h3>인코딩과 디코딩 한번에 정리!</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/django-4-view"><h3>장고 - View</h3></a>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Aug 6, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/django'>Django</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-02-json-serialization"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-02-json-serialization"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-02-json-serialization"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+        <div class="row read-another-section">
+    
+        
+        <a href="/drf-04-viewset-router"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 04 - Viewset과 Router</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-03-json-res-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-01-api-server"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 01 - API서버</h3>
+        </div></a>
+        
+    
+        
+        <a href="/encoding-and-decoding"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-sunset.jpg'>
+            <h3 class="read-another">인코딩과 디코딩 한번에 정리!</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-4-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - View</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-3-regex"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - Regex 정규식</h3>
+        </div></a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>

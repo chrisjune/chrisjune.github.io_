@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>톰의 삽질로그 | DRF 04 - Viewset과 Router</title>
+    <meta name="description" content="Viewset은 한번에 하나의 URL만 매핑한다. 하지만 Router를 활용하여 2개 URL에 매핑하는 방법을 알아본다.">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/drf-04-viewset-router">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-wolf.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>DRF 04 - Viewset과 Router</h1>
+
+            <p>Viewset은 한번에 하나의 URL만 매핑한다. 하지만 Router를 활용하여 2개 URL에 매핑하는 방법을 알아본다.</p>
+
+<h2 id="viewset">ViewSet</h2>
+<ul>
+  <li>일반적으로 CBV는 하나의 View(URL)만 처리한다</li>
+  <li>Viewset은 CBV의 확장 형태로 목록단위와 Record단위 View를 처리한다.</li>
+  <li><code class="highlighter-rouge">list</code>/<code class="highlighter-rouge">create</code>/<code class="highlighter-rouge">retrieve</code>/<code class="highlighter-rouge">update</code>/<code class="highlighter-rouge">partial_update</code>/<code class="highlighter-rouge">destory</code> 함수를 모두 지원한다.</li>
+  <li>하지만, 하나의 URL에서 모두 처리하는 것은 불가능하다. 왜냐하면, 일반적인 REST API설계에서 벗어나기 때문이다.</li>
+  <li>Viewset은 <code class="highlighter-rouge">.as_view({'http_method':'member_fuction'})</code>를 호출하여 하나의 뷰함수를 하나의 URL에 매핑함</li>
+  <li>Viewset URL 매핑 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># list route</span>
+  <span class="n">post_list</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">as_view</span><span class="p">({</span>
+  <span class="s">'get'</span><span class="p">:</span> <span class="s">'list'</span><span class="p">,</span>
+      <span class="s">'post'</span><span class="p">:</span> <span class="s">'create'</span><span class="p">,</span>
+  <span class="p">})</span>
+
+  <span class="c"># detail route</span>
+  <span class="n">post_detail</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">as_view</span><span class="p">({</span>
+      <span class="s">'get'</span><span class="p">:</span> <span class="s">'retrieve'</span><span class="p">,</span>
+      <span class="s">'put'</span><span class="p">:</span> <span class="s">'update'</span><span class="p">,</span>
+      <span class="s">'patch'</span><span class="p">:</span> <span class="s">'partial_update'</span><span class="p">,</span>
+      <span class="s">'delete'</span><span class="p">:</span> <span class="s">'destroy'</span><span class="p">,</span>
+  <span class="p">})</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="router를-활용하여-여러개의-view-하나의-url-매핑">Router를 활용하여 여러개의 View 하나의 URL 매핑</h2>
+<ul>
+  <li>Router는 Viewset에 두개 URL에 매핑해준다.</li>
+  <li>viewset이 지원하는 메소드에 대해서 URL매핑을 수행한다.</li>
+  <li>list_route: 데이터 리스트 출력, 데이터 생성</li>
+  <li>detail_route: 상세 데이터 출력, 데이터 수정, 데이터 부분수정, 데이터 삭제
+    <ul>
+      <li><code class="highlighter-rouge">list router</code> -&gt; <code class="highlighter-rouge">/prefix/</code></li>
+      <li><code class="highlighter-rouge">detail router</code> -&gt; <code class="highlighter-rouge">/prefix/pk/</code></li>
+    </ul>
+  </li>
+  <li>Router 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework.routers</span> <span class="kn">import</span> <span class="n">DefaultRouter</span>
+
+  <span class="n">router</span> <span class="o">=</span> <span class="n">DefaultRouter</span><span class="p">()</span>
+  <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'prefix'</span><span class="p">,</span> <span class="n">PostViewSet</span><span class="p">)</span>
+
+  <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">url</span><span class="p">(</span><span class="s">r''</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+  <span class="p">]</span>
+</code></pre></div>    </div>
+    <hr />
+  </li>
+</ul>
+
+<h2 id="데코레이터를-활용하여-viewset에-custom-view-추가">데코레이터를 활용하여 Viewset에 Custom View 추가</h2>
+<ul>
+  <li><code class="highlighter-rouge">list route</code>와 <code class="highlighter-rouge">detail route</code>에 API추가</li>
+  <li>Viewset내에서 <code class="highlighter-rouge">@list_route</code>와 <code class="highlighter-rouge">@detail_route</code> 데코레이터로 구현</li>
+  <li>URL매핑은 데코레이터에 따라 Router에서 자동 매핑됨</li>
+  <li>Custom Vivew 맛보기
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">list_route</span><span class="p">,</span> <span class="n">detail_route</span>
+  <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+
+
+  <span class="k">class</span> <span class="nc">PostViewSet</span><span class="p">(</span><span class="n">ModelViewSet</span><span class="p">):</span>
+      <span class="n">queryset</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+      <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PostSerializer</span>
+
+      <span class="nd">@list_route</span><span class="p">()</span>  <span class="c"># 목록 단위로 적용할 API이기에, list_route 장식자 사용</span>
+      <span class="k">def</span> <span class="nf">public_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+          <span class="n">qs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">is_public</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c"># Post모델에 is_public 필드가 있을 경우</span>
+          <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+  <span class="c">#URL 매핑은 `/prefix/함수명/`으로서 `/post/public_list/`</span>
+
+
+      <span class="nd">@detail_route</span><span class="p">(</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'patch'</span><span class="p">])</span>  <span class="c"># Record 단위로 적용할 API이기에, detail_route 장식자 사용</span>
+      <span class="k">def</span> <span class="nf">set_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+          <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+          <span class="n">instance</span><span class="o">.</span><span class="n">is_public</span> <span class="o">=</span> <span class="bp">True</span>
+          <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+          <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+  <span class="c"># URL 매핑은 `/prefix/{pk}/함수명/`으로서 `/post/{pk}/set_public/`</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p>본 내용은 <a href="https://www.askcompany.kr/"><code class="highlighter-rouge">askDjango</code></a>강좌를 참고하였습니다</p>
+</blockquote>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 10 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-03-json-res-view"><h3>DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-02-json-serialization"><h3>DRF 02 - JSON 직렬화</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-01-api-server"><h3>DRF 01 - API서버</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/encoding-and-decoding"><h3>인코딩과 디코딩 한번에 정리!</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/django-4-view"><h3>장고 - View</h3></a>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Aug 6, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/django'>Django</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-04-viewset-router"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-04-viewset-router"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-04-viewset-router"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+        <div class="row read-another-section">
+    
+        
+        <a href="/drf-03-json-res-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-02-json-serialization"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 02 - JSON 직렬화</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-01-api-server"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 01 - API서버</h3>
+        </div></a>
+        
+    
+        
+        <a href="/encoding-and-decoding"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-sunset.jpg'>
+            <h3 class="read-another">인코딩과 디코딩 한번에 정리!</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-4-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - View</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-3-regex"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - Regex 정규식</h3>
+        </div></a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>

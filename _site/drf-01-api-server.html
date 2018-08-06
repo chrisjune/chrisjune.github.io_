@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>톰의 삽질로그 | DRF 01 - API서버</title>
+    <meta name="description" content="REST API서버란 무엇이고, FBV, CBV를 만들며 Django Rest-framework에 대해 알아본다.">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/drf-01-api-server">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-wolf.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>DRF 01 - API서버</h1>
+
+            <p>REST API서버란 무엇이고, FBV, CBV를 만들며 Django Rest-framework에 대해 알아본다.</p>
+
+<h2 id="api서버란">API서버란</h2>
+<ul>
+  <li>앱/웹을 위한 <code class="highlighter-rouge">데이터 중심</code>의 서비스이며 버전개념이 존재한다.</li>
+</ul>
+
+<h2 id="rest-api">REST API</h2>
+<ul>
+  <li>REST API서버는 데이터의 Create, Read, Update, Delete의 액션을 제공한다.</li>
+  <li>하지만, 대부분의 REST API라는 API들은 REST 아키텍쳐가 아니며, 단순히 HTTP프로토콜을 통한 HTTP API라고 해야한다.</li>
+  <li>django rest-framework는 django서버에서 데이터 핸들링 작업을 보다 쉽게 만들어주는 제공하는 파이썬 라이브러리이다.</li>
+</ul>
+
+<h2 id="api호출">API호출</h2>
+<ol>
+  <li>JS를 통한 호출</li>
+  <li>브라우져, Selenium을 통한 호출</li>
+  <li>웹요청개발 프로그램을 통한 호출
+    <ul>
+      <li>GUI: Postman, Insomnia</li>
+      <li>CLI: cURL, HTTPie</li>
+      <li>library: requests</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="httpie">HTTPie</h2>
+<ul>
+  <li>GET
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> http GET 요청할주소 GET인자명<span class="o">==</span>값 GET인자명<span class="o">==</span>값
+</code></pre></div>    </div>
+  </li>
+  <li>POST
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> http <span class="nt">--json</span> POST 요청할주소 GET인자명<span class="o">==</span>값 GET인자명<span class="o">==</span>값 POST인자명<span class="o">=</span>값 POST인자명<span class="o">=</span>값
+<span class="o">&gt;</span> http <span class="nt">--form</span> POST 요청할주소 GET인자명<span class="o">==</span>값 GET인자명<span class="o">==</span>값 POST인자명<span class="o">=</span>값 POST인자명<span class="o">=</span>값
+<span class="c"># form 옵션 지정 시 : multipart/form-data 요청, HTML Form과 동일</span>
+<span class="c"># json 옵션을 지정하거나 생략 시 : application/json 요청, 요청 데이터를 JSON포맷으로 직렬화해서 전달</span>
+</code></pre></div>    </div>
+  </li>
+  <li>PUT
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> http PUT 요청할주소 GET인자명<span class="o">==</span>값 GET인자명<span class="o">==</span>값 PUT인자명<span class="o">=</span>값 PUT인자명값
+</code></pre></div>    </div>
+  </li>
+  <li>DELETE
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> http DELETE 요청할주소 GET인자명<span class="o">==</span>값 GET인자명<span class="o">==</span>값
+</code></pre></div>    </div>
+  </li>
+  <li><a href="http://httpbin.org"><code class="highlighter-rouge">httpbin.org</code></a>/GET, POST, DELETE  사이트로 호출 테스트가능
+    <ul>
+      <li>Request
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> http GET httpbin.org/get
+</code></pre></div>        </div>
+      </li>
+      <li>Response
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: <span class="nb">true
+</span>Access-Control-Allow-Origin: <span class="k">*</span>
+Connection: keep-alive
+Content-Length: 256
+Content-Type: application/json
+Date: Mon, 06 Aug 2018 12:07:53 GMT
+Server: gunicorn/19.9.0
+Via: 1.1 vegur
+<span class="o">{</span>
+  <span class="s2">"args"</span>: <span class="o">{}</span>,
+  <span class="s2">"headers"</span>: <span class="o">{</span>
+  <span class="s2">"Accept"</span>: <span class="s2">"*/*"</span>,
+  <span class="s2">"Accept-Encoding"</span>: <span class="s2">"gzip, deflate"</span>,
+  <span class="s2">"Connection"</span>: <span class="s2">"close"</span>,
+  <span class="s2">"Host"</span>: <span class="s2">"httpbin.org"</span>,
+  <span class="s2">"User-Agent"</span>: <span class="s2">"HTTPie/0.9.9"</span>
+  <span class="o">}</span>,
+  <span class="s2">"origin"</span>: <span class="s2">"61.97.139.163"</span>,
+  <span class="s2">"url"</span>: <span class="s2">"http://httpbin.org/get"</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="django를-활용한-rest-api-구현-맛보기-tutorial">Django를 활용한 REST API 구현 맛보기 Tutorial</h2>
+<h3 id="fbvfunction-based-view">FBV(Function Based View)</h3>
+<ul>
+  <li>구현 순서
+    <ol>
+      <li>model</li>
+      <li>form ModelForm</li>
+      <li>views request function return JsonResponse</li>
+      <li>urls</li>
+    </ol>
+  </li>
+  <li>Model
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 모델 구현 : myapp/models.py</span>
+  <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+  <span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+      <span class="n">message</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Form
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 폼 구현 : myapp/forms.py</span>
+  <span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+  <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+  <span class="k">class</span> <span class="nc">PostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+      <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+          <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
+          <span class="n">fields</span> <span class="o">=</span> <span class="s">'__all__'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>View
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 뷰 구현 : myapp/views.py</span>
+  <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">JsonResponse</span>
+  <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">QueryDict</span>
+  <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+  <span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span>
+  <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+  <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">PostForm</span>
+
+  <span class="nd">@csrf_exempt</span>
+  <span class="k">def</span> <span class="nf">post_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+          <span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+          <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s">'pk'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">message</span><span class="p">}</span> <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>  <span class="c"># 수동 JSON 직렬화</span>
+          <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+      <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+          <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+              <span class="n">post</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+              <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+          <span class="n">data</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span>
+          <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+  <span class="nd">@csrf_exempt</span>
+  <span class="k">def</span> <span class="nf">post_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+      <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s">'pk'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">message</span><span class="p">})</span>
+      <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'PUT'</span><span class="p">:</span>
+          <span class="n">put</span> <span class="o">=</span> <span class="n">QueryDict</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+          <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">(</span><span class="n">put</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">post</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+              <span class="n">post</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+              <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'pk'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">message</span><span class="p">}</span>
+              <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+      <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'DELETE'</span><span class="p">:</span>
+          <span class="n">post</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+          <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">204</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Urls 구현
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># URLConf 구현 : myapp/urls.py</span>
+  <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+  <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">post_list</span><span class="p">,</span> <span class="n">post_detail</span>
+
+  <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">url</span><span class="p">(</span><span class="s">r'^post/$'</span><span class="p">,</span> <span class="n">post_list</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'post-list'</span><span class="p">),</span>
+      <span class="n">url</span><span class="p">(</span><span class="s">r'^post/(?P&lt;pk&gt;\d+)/$'</span><span class="p">,</span> <span class="n">post_detail</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'post-detail'</span><span class="p">),</span>
+  <span class="p">]</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="cbvclass-based-view">CBV(Class Based View)</h3>
+<ul>
+  <li>구현순서
+    <ol>
+      <li>model</li>
+      <li>serializer ModelSerializer</li>
+      <li>views ModelViewSet</li>
+      <li>urls DefaultRouter</li>
+    </ol>
+  </li>
+  <li>Model
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="err">모델</span> <span class="p">:</span> <span class="n">myapp</span><span class="o">/</span><span class="n">models</span><span class="o">.</span><span class="n">py</span>
+  <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+  <span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+      <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+  <span class="n">Serializer</span> <span class="p">:</span> <span class="n">myapp</span><span class="o">/</span><span class="n">serializers</span><span class="o">.</span><span class="n">py</span> <span class="p">(</span><span class="n">Form</span><span class="err">과</span> <span class="err">유사</span><span class="p">)</span>
+  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+  <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Serializer
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># Serializer: myapp/serializers.py</span>
+  <span class="k">class</span> <span class="nc">PostSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+      <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+          <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
+          <span class="n">fields</span> <span class="o">=</span> <span class="s">'__all__'</span>
+</code></pre></div>    </div>
+  </li>
+  <li>View
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 뷰 : myapp/views.py</span>
+  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
+  <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+  <span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">PostSerializer</span>
+
+  <span class="k">class</span> <span class="nc">PostViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+      <span class="n">queryset</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
+      <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PostSerializer</span>
+</code></pre></div>    </div>
+  </li>
+  <li>URL
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># URL : myapp/urls.py</span>
+  <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+  <span class="kn">from</span> <span class="nn">rest_framework.routers</span> <span class="kn">import</span> <span class="n">DefaultRouter</span>
+  <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">PostViewSet</span>
+
+  <span class="n">router</span> <span class="o">=</span> <span class="n">DefaultRouter</span><span class="p">()</span>
+  <span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">r'post'</span><span class="p">,</span> <span class="n">PostViewSet</span><span class="p">)</span>
+
+  <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">url</span><span class="p">(</span><span class="s">r''</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+  <span class="p">]</span>
+</code></pre></div>    </div>
+    <blockquote>
+      <p>본 내용은 <a href="https://www.askcompany.kr/"><code class="highlighter-rouge">askDjango</code></a>강좌를 참고하였습니다</p>
+    </blockquote>
+  </li>
+</ul>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 10 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-04-viewset-router"><h3>DRF 04 - Viewset과 Router</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-03-json-res-view"><h3>DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-02-json-serialization"><h3>DRF 02 - JSON 직렬화</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/encoding-and-decoding"><h3>인코딩과 디코딩 한번에 정리!</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/django-4-view"><h3>장고 - View</h3></a>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Aug 6, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/django'>Django</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-01-api-server"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-01-api-server"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-01-api-server"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+        <div class="row read-another-section">
+    
+        
+        <a href="/drf-04-viewset-router"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 04 - Viewset과 Router</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-03-json-res-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-02-json-serialization"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 02 - JSON 직렬화</h3>
+        </div></a>
+        
+    
+        
+        <a href="/encoding-and-decoding"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-sunset.jpg'>
+            <h3 class="read-another">인코딩과 디코딩 한번에 정리!</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-4-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - View</h3>
+        </div></a>
+        
+    
+        
+        <a href="/django-3-regex"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-spain.jpg'>
+            <h3 class="read-another">장고 - Regex 정규식</h3>
+        </div></a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>
