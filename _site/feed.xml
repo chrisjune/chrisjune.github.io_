@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>톰의 삽질로그</title>
-    <description>tech blog
+    <description>공부하며 삽질했던 내용, 정리내용을 공유합니다.
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Aug 2018 15:36:10 +0900</pubDate>
-    <lastBuildDate>Wed, 08 Aug 2018 15:36:10 +0900</lastBuildDate>
+    <pubDate>Thu, 09 Aug 2018 10:02:01 +0900</pubDate>
+    <lastBuildDate>Thu, 09 Aug 2018 10:02:01 +0900</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>

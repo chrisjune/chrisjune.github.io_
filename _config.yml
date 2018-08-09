@@ -2,7 +2,7 @@
 title: 톰의 삽질로그
 email: chrisjune2701@gmail.com
 description: > # Writer Theme is a responsive template
- tech blog
+ 공부하며 삽질했던 내용, 정리내용을 공유합니다.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://chrisjune.github.io/" # the base hostname & protocol for your site
 enable_retina: false
