@@ -2,6 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>http://localhost:4000/validate-of-serializer</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-07-pagination</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-06-filtering</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-05-format-renderer</loc>
+    </url>
+    
+    <url>
         <loc>http://localhost:4000/drf-04-viewset-router</loc>
     </url>
     

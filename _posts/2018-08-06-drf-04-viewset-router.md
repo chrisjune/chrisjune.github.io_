@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-Viewset은 한번에 하나의 URL만 매핑한다. 하지만 Router를 활용하여 2개 URL에 매핑하는 방법을 알아본다.
+Viewset은 한번에 하나의 URL만 매핑한다. Router를 활용하여 2개 URL에 매핑하는 방법을 알아본다.
 
 ## ViewSet
 * 일반적으로 CBV는 하나의 View(URL)만 처리한다
