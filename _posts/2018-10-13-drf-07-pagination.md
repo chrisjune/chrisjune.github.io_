@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-API호출시 내용 길이를 관리하는 `Pagination`에 대해 알아본다
+**API호출시 내용 길이를 관리하는 `Pagination`에 대해 알아본다**
 
 * 내용이 많을 경우 하나의 API요청처리시 서버와 클라이언트 양쪽모두 부하를 유발할 수 있다.
 * 따라서, Pagination을 통해 출력하고자하는 데이터를 적절하게 관리해야 한다.

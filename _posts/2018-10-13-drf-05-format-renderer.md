@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-rest_framework.response.Response에서는 `api`, `json` 두가지 타입의 응답 가능함
+**rest_framework.response.Response에서는 `api`, `json` 두가지 타입의 응답 가능함**
 
 * API: 웹브라우져 요청시
 * JSON: API요청시

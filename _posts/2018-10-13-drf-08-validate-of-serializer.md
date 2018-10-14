@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-Serializer의 중요한 기능인 `Validate`에 대해 알아본다
+**Serializer의 중요한 기능인 `Validate`에 대해 알아본다**
 
 ## Serializer 생성자
 

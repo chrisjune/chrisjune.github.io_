@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>톰의 삽질로그 | DRF 06 - Filtering</title>
-    <meta name="description" content="장고 APIView의 Request와 URL Capture에 대해 알아본다">
+    <title>톰의 삽질로그 | DRF 11 - DRF Default Settings</title>
+    <meta name="description" content="DRF 기본 설정에 대해 알아본다  django-rest-framework sttings">
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/drf-06-filtering">
+    <link rel="canonical" href="http://localhost:4000/drf-11-default-settings">
     <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
@@ -72,38 +72,93 @@
     <div class="row">
         <div class="col-xs-12 col-md-8 single-content-sidebar">
 
-            <h1>DRF 06 - Filtering</h1>
+            <h1>DRF 11 - DRF Default Settings</h1>
 
-            <p><strong>장고 APIView의 <code class="highlighter-rouge">Request</code>와 <code class="highlighter-rouge">URL Capture</code>에 대해 알아본다</strong></p>
+            <p><strong>DRF 기본 설정에 대해 알아본다</strong></p>
+<blockquote>
+  <p><a href="https://github.com/encode/django-rest-framework/blob/3.8.2/rest_framework/settings.py#L31"><strong>django-rest-framework sttings</strong></a></p>
+</blockquote>
 
-<h1 id="api-request">API Request</h1>
+<h2 id="default-settings">Default Settings</h2>
 
+<h4 id="default_renderer_classes">DEFAULT_RENDERER_CLASSES</h4>
 <ul>
-  <li>목록조회 APIView에서는 queryset을 필터링할 필요가 있음</li>
-  <li>검색어, 유저에 따른 필터링의 조건이 필요함</li>
-  <li>APIView 는 View 를 상속받은 CBV
+  <li>HTTP 최종응답 생성</li>
+  <li><code class="highlighter-rouge">JSONRenderer</code>: JSON 포맷</li>
+  <li><code class="highlighter-rouge">BrowsableAPIRenderer</code> : Browsable API 포맷 응답 (HTML)</li>
+</ul>
+
+<h4 id="default_parser_classes">DEFAULT_PARSER_CLASSES</h4>
+<ul>
+  <li>HTTP 요청 내역 처리</li>
+  <li><code class="highlighter-rouge">JSONParser</code>: JSON 포맷 요청 처리</li>
+  <li><code class="highlighter-rouge">FormParser</code>: enctype application/x-www-form-urlencoded 요청 처리</li>
+  <li><code class="highlighter-rouge">MultiPartParser</code> : encytpe multipart/form-data 요청 처리 (파일 업로드 지원)</li>
+</ul>
+
+<h4 id="default_authentication_classes">DEFAULT_AUTHENTICATION_CLASSES</h4>
+<ul>
+  <li>HTTP 요청 인증</li>
+  <li><code class="highlighter-rouge">SessionAuthentication</code> : 세션으로 유저 인증</li>
+  <li><code class="highlighter-rouge">BasicAuthentication</code>: base64로 user_id:password 값 인증
     <ul>
-      <li>self.request 로 HTTPRequest를 참조할 수 있음</li>
-      <li>self.request.user: 로그인된 유저정보</li>
-      <li>self.request.GET : GET요청인자</li>
-      <li>self.request.POST: POST 요청인자</li>
-      <li>self.request.query_params: GET인자와 동일한 값. 가독성이 높음
-        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'user_id'</span><span class="p">)</span>
-</code></pre></div>        </div>
-      </li>
+      <li>보안적으로 매우 취약하므로 못할짓</li>
     </ul>
   </li>
 </ul>
 
-<h1 id="url-capture">URL Capture</h1>
-
+<h4 id="default_permission_classes">DEFAULT_PERMISSION_CLASSES</h4>
 <ul>
-  <li><code class="highlighter-rouge">self.kwargs['username']</code>으로 URL capture 값을 획득할 수 있음
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">urlpatterns</span> <span class="o">=</span><span class="p">[</span>
-      <span class="n">url</span><span class="p">(</span><span class="s">r'^(?P&lt;username&gt;\w+)$'</span><span class="p">,</span><span class="n">views</span><span class="o">.</span><span class="n">SomeView</span><span class="o">.</span><span class="n">as_view</span><span class="p">()),</span>
-  <span class="p">]</span>
-</code></pre></div>    </div>
+  <li>API호출 권한</li>
+  <li>Permission 내용 참조</li>
+</ul>
+
+<h4 id="default_throttle_classes-default_throttle_rates">DEFAULT_THROTTLE_CLASSES, DEFAULT_THROTTLE_RATES</h4>
+<ul>
+  <li>특정 시간당 최대 요청 횟수 제한</li>
+  <li><code class="highlighter-rouge">DEFAULT_THROTTLE_CLASSES</code> : 최대 호출를 제한할 로직 (클래스)</li>
+  <li><code class="highlighter-rouge">DEFAULT_THROTTLE_RATES</code> : 최대 호출 횟수 지정</li>
+</ul>
+
+<h4 id="default_pagination_class">DEFAULT_PAGINATION_CLASS</h4>
+<ul>
+  <li>페이징처리</li>
+  <li>PAGE_SIZE: 1페이지 최대 갯수</li>
+</ul>
+
+<h4 id="인코딩">인코딩</h4>
+<ul>
+  <li><code class="highlighter-rouge">UNICODE_JSON</code> = True
+    <ul>
+      <li>json.dumps시 ensure_ascii=False 적용. <code class="highlighter-rouge">UTF-8 인코딩</code></li>
+    </ul>
   </li>
+  <li><code class="highlighter-rouge">COMPACT_JSON</code> = True
+    <ul>
+      <li>json.dumps시 ‘, ‘ 아닌 ‘,’ 적용</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">STRICT_JSON</code> = True
+    <ul>
+      <li>NaN, Inf 값 존재시 ValueError raise</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">COERCE_DECIMAL_TO_STRING</code> = True
+    <ul>
+      <li>Decimal을 문자열 강제 변환여부</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">UPLOAD_FILES_USE_URL</code> = True
+    <ul>
+      <li>파일명 대신 URL제공</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="browseable-api">Browseable API</h4>
+<ul>
+  <li><code class="highlighter-rouge">HTML_SELECT_CUTOFF</code>: Choice 옵션 최대 허용수</li>
+  <li><code class="highlighter-rouge">HTML_SELECT_CUTOFF_TEXT</code>: 초과시 안내 메시지</li>
 </ul>
 
 
@@ -119,7 +174,7 @@
                 </div>
 
                 <div class="sidebar-readtime">
-                    <i class="fa fa-bookmark"></i> 5 minute read
+                    <i class="fa fa-bookmark"></i> 10 minute read
                 </div>
 
             </div>
@@ -130,12 +185,6 @@
                 
                 <div class="similar-post">
                     <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
-                    <a href="/drf-11-default-settings"><h3>DRF 11 - DRF Default Settings</h3></a>
                 </div>
                 
             
@@ -154,6 +203,12 @@
                 
                 <div class="similar-post">
                     <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-07-pagination"><h3>DRF 07 - Pagination</h3></a>
                 </div>
                 
             
@@ -181,7 +236,7 @@
         </div>
         <div class="col-xs-12 col-sm-6">
             <div class="category-list">
-                <p>Published <span>Oct 13, 2018</span></p>
+                <p>Published <span>Oct 14, 2018</span></p>
                 <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
 
                 <div class="other-catergories">
@@ -203,10 +258,10 @@
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-06-filtering"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-11-default-settings"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-06-filtering"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-06-filtering"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-11-default-settings"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-11-default-settings"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -221,14 +276,6 @@
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 12 - DRF Authentication</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-11-default-settings"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 11 - DRF Default Settings</h3>
         </div></a>
         
     
@@ -261,6 +308,14 @@
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 07 - Pagination</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-06-filtering"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 06 - Filtering</h3>
         </div></a>
         
     

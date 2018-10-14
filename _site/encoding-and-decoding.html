@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>톰의 삽질로그 | 인코딩과 디코딩 한번에 정리!</title>
-    <meta name="description" content="  인코딩: 문자열을 바이트로 변환함          ‘한글’ -&gt; b’\xc7\xd1\xb1\xdb’        디코딩: 바이트를 문자열로 변환          b’\xc7\xd1\xb1\xdb’ -&gt; ‘한글’        파이썬에서는 문자열을 유니코드로 처리 즉, ...">
+    <meta name="description" content="      인코딩: 문자열을 바이트로 변환함              ‘한글’ -&gt; b’\xc7\xd1\xb1\xdb’              디코딩: 바이트를 문자열로 변환              b’\xc7\xd1\xb1\xdb’ -&gt; ‘한글’              ...">
 
     <link rel="stylesheet" href="/css/main.css">
 
@@ -74,19 +74,21 @@
 
             <h1>인코딩과 디코딩 한번에 정리!</h1>
 
-            <ul>
-  <li>인코딩: 문자열을 바이트로 변환함
-    <ul>
-      <li>‘한글’ -&gt; b’\xc7\xd1\xb1\xdb’</li>
-    </ul>
-  </li>
-  <li>디코딩: 바이트를 문자열로 변환
-    <ul>
-      <li>b’\xc7\xd1\xb1\xdb’ -&gt; ‘한글’</li>
-    </ul>
-  </li>
-  <li>파이썬에서는 문자열을 유니코드로 처리 즉, 문자열(String) = Unicode</li>
-</ul>
+            <blockquote>
+  <ul>
+    <li><strong>인코딩</strong>: 문자열을 바이트로 변환함
+      <ul>
+        <li>‘한글’ -&gt; b’\xc7\xd1\xb1\xdb’</li>
+      </ul>
+    </li>
+    <li><strong>디코딩</strong>: 바이트를 문자열로 변환
+      <ul>
+        <li>b’\xc7\xd1\xb1\xdb’ -&gt; ‘한글’</li>
+      </ul>
+    </li>
+    <li>파이썬에서는 문자열을 유니코드로 처리 즉, 문자열(String) = Unicode</li>
+  </ul>
+</blockquote>
 
 <h2 id="인코딩">인코딩</h2>
 <ul>
@@ -156,31 +158,31 @@
             
                 
                 <div class="similar-post">
-                    <a href="/validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
+                    <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
                 </div>
                 
             
                 
                 <div class="similar-post">
-                    <a href="/drf-07-pagination"><h3>DRF 07 - Pagination</h3></a>
+                    <a href="/drf-11-default-settings"><h3>DRF 11 - DRF Default Settings</h3></a>
                 </div>
                 
             
                 
                 <div class="similar-post">
-                    <a href="/drf-06-filtering"><h3>DRF 06 - Filtering</h3></a>
+                    <a href="/drf-10-throttling"><h3>DRF 10 - Throttling</h3></a>
                 </div>
                 
             
                 
                 <div class="similar-post">
-                    <a href="/drf-05-format-renderer"><h3>DRF 05 - Format인자와 다양한 Renderer</h3></a>
+                    <a href="/drf-09-authentication"><h3>DRF 09 - Authentication</h3></a>
                 </div>
                 
             
                 
                 <div class="similar-post">
-                    <a href="/drf-04-viewset-router"><h3>DRF 04 - Viewset과 Router</h3></a>
+                    <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
                 </div>
                 
             
@@ -244,7 +246,39 @@
         <div class="row read-another-section">
     
         
-        <a href="/validate-of-serializer"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+        <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 12 - DRF Authentication</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-11-default-settings"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 11 - DRF Default Settings</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-10-throttling"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 10 - Throttling</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-09-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 09 - Authentication</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-08-validate-of-serializer"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 08 - Serializer 유효성검사</h3>
@@ -256,38 +290,6 @@
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 07 - Pagination</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-06-filtering"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 06 - Filtering</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-05-format-renderer"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 05 - Format인자와 다양한 Renderer</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-04-viewset-router"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 04 - Viewset과 Router</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-03-json-res-view"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 03 - JSON 응답뷰(APIView, ViewSet)</h3>
         </div></a>
         
     

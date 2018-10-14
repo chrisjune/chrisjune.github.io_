@@ -2,7 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
-        <loc>http://localhost:4000/validate-of-serializer</loc>
+        <loc>http://localhost:4000/drf-12-authentication</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-11-default-settings</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-10-throttling</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-09-authentication</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/drf-08-validate-of-serializer</loc>
     </url>
     
     <url>

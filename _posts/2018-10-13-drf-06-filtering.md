@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-장고 APIView의 `Request`와 `URL Capture`에 대해 알아본다
+**장고 APIView의 `Request`와 `URL Capture`에 대해 알아본다**
 
 # API Request
 

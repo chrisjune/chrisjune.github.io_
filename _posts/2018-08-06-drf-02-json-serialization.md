@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-> 데이터 직렬화(Serialization)의 개념을 이해하고, Serializer를 구현할 수 있다.
+**데이터 직렬화(Serialization)의 개념을 이해하고, Serializer를 구현할 수 있다.**
 
 ## 데이터 직렬화
 * 모든 프로그램통신에서 데이터는 반드시 문자열로 표현되어야함.

@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-> Django Rest-framework에서 제공하는 APIView와 ViewSet에 대해 알아보고 Serialized 된 데이터를 View에 표현해본다
+**Django Rest-framework에서 제공하는 APIView와 ViewSet에 대해 알아보고 Serialized 된 데이터를 View에 표현해본다**
 
 ## View
 * Serializer의 데이터를 활용하여 HTTP요청을 처리한다

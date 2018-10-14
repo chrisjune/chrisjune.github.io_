@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>톰의 삽질로그 | DRF 09 - Authentication</title>
+    <meta name="description" content="Authentication &amp; Permission에 대해 알아본다">
+
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="canonical" href="http://localhost:4000/drf-09-authentication">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-123601360-1');
+    </script>
+
+    <!--[if lt IE 9]>
+        <script src="/js/vendor/html5shiv.min.js"></script>
+    <![endif]-->
+</head>
+
+
+  <body class="">
+
+    <header class="hero-image" style='background-image: url(/img/feature-wolf.jpg);'>
+    <span class="menu-trigger animated fadeInDown">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </span>
+
+    <!-- if the user has javascript disabled they can still use the menu -->
+<noscript>
+    <div class="no-js-menu">
+        <ul>
+            
+                <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+            
+                <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+            
+                <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+            
+        </ul>
+    </div>
+</noscript>
+<!-- end no script -->
+
+    <div id="menu-target">
+    <ul>
+        
+            <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+        
+            <li><i class="fa fa-plane"></i><a href="/contact">Contact</a></li>
+        
+            <li><i class="fa fa-user"></i><a href="/author/tom">Author</a></li>
+        
+    </ul>
+</div>
+
+</header>
+
+<main class="container">
+    <div class="row">
+        <div class="col-xs-12 col-md-8 single-content-sidebar">
+
+            <h1>DRF 09 - Authentication</h1>
+
+            <p><strong>Authentication &amp; Permission에 대해 알아본다</strong></p>
+
+<h2 id="지원하는-인증의-종류">지원하는 인증의 종류</h2>
+
+<ul>
+  <li><code class="highlighter-rouge">SessionAuthentication</code>
+    <ul>
+      <li>세션을 통한 인증 여부 체크</li>
+      <li>APIView를 통해 디폴트 지정 (우선순위 1)</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">BasicAuthentication</code>
+    <ul>
+      <li>Basic 인증헤더를 통한 인증 수행 (ex: Authorization: Basic YWxsaWV1czE6MTAyOXNoYWtl)</li>
+      <li>APIView를 통해 디폴트 지정 (우선순위 2)</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">TokenAuthentication</code>
+    <ul>
+      <li>Token 헤더를 통한 인증 수행 (ex: Authorization: Token 401f7ac837da42b97f613d789819ff93537bee6a)</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">RemoteUserAuthentication</code>
+    <ul>
+      <li>User 정보가 다른 서비스에서 관리될 때, Remote 인증 (장고 공식문서)</li>
+      <li>Remote-User 헤더를 통한 인증 수행</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="http-basic-인증-헤더">HTTP Basic 인증 헤더</h4>
+
+<ul>
+  <li>httpie 이용시 –auth id:password로 인자 지정가능
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c">#BasicAuth 인증</span>
+  <span class="c"># Request</span>
+  <span class="err">❯</span> <span class="n">http</span> <span class="o">-</span><span class="n">a</span> <span class="n">username</span><span class="p">:</span><span class="n">password</span> <span class="o">--</span><span class="n">form</span> <span class="n">POST</span> <span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">post</span>
+
+  <span class="c"># Response</span>
+  <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+  <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
+  <span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+  <span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">477</span>
+  <span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
+  <span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">31</span> <span class="n">Jul</span> <span class="mi">2018</span> <span class="mi">13</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">23</span> <span class="n">GMT</span>
+  <span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9</span><span class="o">.</span><span class="mi">0</span>
+  <span class="n">Via</span><span class="p">:</span> <span class="mf">1.1</span> <span class="n">vegur</span>
+
+  <span class="p">{</span>
+      <span class="s">"args"</span><span class="p">:</span> <span class="p">{},</span>
+      <span class="s">"data"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+      <span class="s">"files"</span><span class="p">:</span> <span class="p">{},</span>
+      <span class="s">"form"</span><span class="p">:</span> <span class="p">{},</span>
+      <span class="s">"headers"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s">"Accept"</span><span class="p">:</span> <span class="s">"*/*"</span><span class="p">,</span>
+          <span class="s">"Accept-Encoding"</span><span class="p">:</span> <span class="s">"gzip, deflate"</span><span class="p">,</span>
+          <span class="s">"Authorization"</span><span class="p">:</span> <span class="s">"Basic dXNlcm5hbWU6cGFzc3dvcmQ="</span><span class="p">,</span>
+          <span class="s">"Connection"</span><span class="p">:</span> <span class="s">"close"</span><span class="p">,</span>
+          <span class="s">"Content-Length"</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+          <span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/x-www-form-urlencoded; charset=utf-8"</span><span class="p">,</span>
+          <span class="s">"Host"</span><span class="p">:</span> <span class="s">"httpbin.org"</span><span class="p">,</span>
+          <span class="s">"User-Agent"</span><span class="p">:</span> <span class="s">"HTTPie/0.9.9"</span>
+      <span class="p">},</span>
+      <span class="s">"json"</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span>
+      <span class="s">"origin"</span><span class="p">:</span> <span class="s">"192.3.3.3"</span><span class="p">,</span>
+      <span class="s">"url"</span><span class="p">:</span> <span class="s">"http://httpbin.org/post"</span>
+  <span class="p">}</span>
+</code></pre></div>    </div>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&gt;&gt;&gt;</span> from <span class="nb">base64 </span>import b64encode
+  <span class="o">&gt;&gt;&gt;</span> str <span class="o">=</span> <span class="s1">'한글비밀번호'</span>
+  <span class="o">&gt;&gt;&gt;</span> encoded <span class="o">=</span> str.encode<span class="o">()</span>
+  <span class="o">&gt;&gt;&gt;</span> encoded
+  b<span class="s1">'\xed\x95\x9c\xea\xb8\x80\xeb\xb9\x84\xeb\xb0\x80\xeb\xb2\x88\xed\x98\xb8'</span>
+  <span class="o">&gt;&gt;&gt;</span> based <span class="o">=</span> b64encode<span class="o">(</span>encoded<span class="o">)</span>
+  <span class="o">&gt;&gt;&gt;</span> based
+  b<span class="s1">'7ZWc6riA67mE67CA67KI7Zi4'</span>
+  <span class="o">&gt;&gt;&gt;</span> from <span class="nb">base64 </span>import b64decode
+  <span class="o">&gt;&gt;&gt;</span> unbased <span class="o">=</span> b64decode<span class="o">(</span>based<span class="o">)</span>
+  <span class="o">&gt;&gt;&gt;</span> unbased
+  b<span class="s1">'\xed\x95\x9c\xea\xb8\x80\xeb\xb9\x84\xeb\xb0\x80\xeb\xb2\x88\xed\x98\xb8'</span>
+  <span class="o">&gt;&gt;&gt;</span> unbased.decode<span class="o">()</span>
+  <span class="s1">'한글비밀번호'</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="permission">Permission</h2>
+<ul>
+  <li><code class="highlighter-rouge">django-rest_framework</code>에서는 <code class="highlighter-rouge">Permission</code>을 기본적으로 제공해줌
+    <ul>
+      <li><code class="highlighter-rouge">is_superuser</code>: 모든 권한 허용</li>
+      <li><code class="highlighter-rouge">is_staff</code>: admin페이지 접속만 가능, 일반 user와 동일</li>
+      <li><code class="highlighter-rouge">is_active</code>: false 인 경우, 권한지정과 상관없이 모두 불허</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">AllowAny</code> : 인증여부에 상관없이, 뷰 호출 허용 (디폴트 지정)</li>
+  <li><code class="highlighter-rouge">IsAuthenticated</code> : 인증된 요청에 한해서, 뷰 호출 허용</li>
+  <li><code class="highlighter-rouge">IsAdminUser</code> : Staff 인증 요청에 한해서, 뷰 호출 허용</li>
+  <li><code class="highlighter-rouge">IsAuthenticatedOrReadOnly</code> : 비인증 요청에게는, 읽기 권한만 허용</li>
+  <li><code class="highlighter-rouge">DjangoModelPermissions</code> : 인증된 요청에 한해서만 뷰 호출을 허용하고, 추가로 유저별 인증 권한체크를 수행</li>
+  <li><code class="highlighter-rouge">DjangoModelPermissionsOrAnonReadOnly</code> : DjangoModelPermissions과 유사하나, 비인증 요청에 대해서는 읽기 권한만 허용</li>
+  <li><code class="highlighter-rouge">DjangoObjectPermissions</code>
+비인증된 요청은 거부
+인증된 요청에 한, Record 접근에 대한 권한체크를 추가로 수행</li>
+</ul>
+
+<h4 id="커스텀-permission-만들기">커스텀 Permission 만들기</h4>
+
+<ul>
+  <li>django-rest-framework에서 기본 제공해주는 Permission만으로도 대개 충분합니다만, 필요에 의해 커스텀 Permission을 만들고 싶을 수 있습니다.</li>
+  <li>
+    <p>모든 Permission 클래스는 다음 2가지 함수를 선택적으로 구현합니다.</p>
+  </li>
+  <li><code class="highlighter-rouge">has_permission</code>(request, view) : 뷰 호출 접근권한
+APIView 접근 시, 체크
+이를 구현한 Permission 클래스 : IsAuthenticated, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly</li>
+  <li><code class="highlighter-rouge">has_object_permission</code>(request, view, obj) : 개별 Record 접근권한
+APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT/DELETE 요청
+브라우저를 통한 API 접근에서 CREATE/UPDATE Form 노출 여부 확인 시에, 체크
+이를 구현한 Permission 클래스 : DjangoObjectPermissions</li>
+</ul>
+
+<h5 id="포스팅-작성자에-한해서-수정-권한은-부여하되-삭제권한은-superuser에게만-부여">포스팅 작성자에 한해서, 수정 권한은 부여하되 삭제권한은 superuser에게만 부여</h5>
+
+<ul>
+  <li>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">permissions</span>
+
+<span class="k">class</span> <span class="nc">IsAuthorUpdateOrReadonly</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="c"># 인증된 유저에 한해, 목록조회/포스팅등록을 허용</span>
+    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span>
+
+    <span class="c"># superuser에게는 삭제 권한만 부여하고</span>
+    <span class="c"># 작성자에게는 수정 권한만 부여해봅시다.</span>
+    <span class="k">def</span> <span class="nf">has_object_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="c"># 조회 요청(GET, HEAD, OPTIONS) 에 대해서는 인증여부에 상관없이 허용</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">permissions</span><span class="o">.</span><span class="n">SAFE_METHODS</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="c"># 삭제 요청의 경우, superuser에게만 허용</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'DELETE'</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_superuser</span>  <span class="c"># request.user.is_staff</span>
+
+        <span class="c"># PUT 요청에 대해, 작성자일 경우에만 요청 허용</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">author</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h5 id="자동생성되는-값이-수정되지-않지만-보여져야-하는-경우-readonlyfieldsource로-처리가능">자동생성되는 값이 수정되지 않지만 보여져야 하는 경우 ReadOnlyField(source)로 처리가능</h5>
+
+<ul>
+  <li>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">serializers</span><span class="o">.</span><span class="n">ReadOnlyField</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="s">'참조할필드명.속성명'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+
+        </div><!-- main-content/col -->
+
+        <div class="col-xs-12 col-md-3 col-md-offset-1 single-content-sidebar-area">
+
+            <img src='img/tom.jpg' class="user-icon " alt="user-image">
+            <div class="meta">
+
+                <div class="sidebar-info">
+                    <a href="/author/tom">Tomas</a> in <a href='category/django'>Django</a>
+                </div>
+
+                <div class="sidebar-readtime">
+                    <i class="fa fa-bookmark"></i> 20 minute read
+                </div>
+
+            </div>
+
+            <h2 class="favorites">Similar Posts</h2>
+
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-11-default-settings"><h3>DRF 11 - DRF Default Settings</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-10-throttling"><h3>DRF 10 - Throttling</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
+                    <a href="/drf-07-pagination"><h3>DRF 07 - Pagination</h3></a>
+                </div>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+
+    </div> <!--/row -->
+
+</main> <!-- /container -->
+
+<footer class="single">
+    <div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <img src="/img/tom.jpg" class="user-icon " alt="user-image">
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="category-list">
+                <p>Published <span>Oct 13, 2018</span></p>
+                <p><a href="/author/tom">Tomas</a> in <a href='/category/django'>Django</a></p>
+
+                <div class="other-catergories">
+                    <h3>Also found in</h3>
+
+                    <ul>
+                        
+                        <li>
+                            <a href='/category/django'>Django</a>
+                            
+                        </li>
+                        
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- end col -->
+        <div class="col-xs-12 col-sm-4">
+            <div class="social">
+                <p>Share this article</a>
+                <div class="social-links">
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-09-authentication"><i class="fa fa-twitter"></i></a>
+
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-09-authentication"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-09-authentication"><i class="fa fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+</div>
+
+    
+        <div class="row read-another-section">
+    
+        
+        <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 12 - DRF Authentication</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-11-default-settings"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 11 - DRF Default Settings</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-10-throttling"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 10 - Throttling</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-08-validate-of-serializer"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 08 - Serializer 유효성검사</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-07-pagination"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 07 - Pagination</h3>
+        </div></a>
+        
+    
+        
+        <a href="/drf-06-filtering"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">DRF 06 - Filtering</h3>
+        </div></a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+    
+</footer>
+
+
+
+    <script src='/js/vendor/modernizr.custom.32229-2.8-respondjs-1-4-2.js'></script>
+    <script src="/js/vendor/jquery-1.11.2.min.js"></script>
+    <script src='/js/vendor/jquery.jpanelmenu.min.js'></script>
+    <script type='application/javascript' src='/js/vendor/fastclick.min.js'></script>
+    
+    <script src=' /js/main.js'></script>
+  
+  </body>
+
+</html>

@@ -12,7 +12,7 @@ feature_image: feature-wolf
 show_related_posts: true
 square_related: recommend-fire
 ---
-REST API서버란 무엇이고, FBV, CBV를 만들며 Django Rest-framework에 대해 알아본다.
+**REST API서버란 무엇이고, FBV, CBV를 만들며 Django Rest-framework에 대해 알아본다**
 
 ## API서버란
 * 앱/웹을 위한 `데이터 중심`의 서비스이며 버전개념이 존재한다.

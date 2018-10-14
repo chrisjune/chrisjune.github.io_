@@ -12,9 +12,9 @@ feature_image: feature-book
 show_related_posts: true
 square_related: recommend-sunset
 ---
-* 인코딩: 문자열을 바이트로 변환함
+> * **인코딩**: 문자열을 바이트로 변환함
 	* '한글' -> b'\xc7\xd1\xb1\xdb'
-* 디코딩: 바이트를 문자열로 변환
+* **디코딩**: 바이트를 문자열로 변환
 	* b'\xc7\xd1\xb1\xdb' -> '한글' 
 * 파이썬에서는 문자열을 유니코드로 처리 즉, 문자열(String) = Unicode
 
