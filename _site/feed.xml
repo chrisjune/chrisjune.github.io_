@@ -4,10 +4,10 @@
     <title>톰의 삽질로그</title>
     <description>공부하며 삽질했던 내용, 정리내용을 공유합니다.
 </description>
-    <link>https://chrisjune.github.io//</link>
-    <atom:link href="https://chrisjune.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Jan 2020 23:37:28 +0900</pubDate>
-    <lastBuildDate>Tue, 14 Jan 2020 23:37:28 +0900</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 14 Jan 2020 23:43:37 +0900</pubDate>
+    <lastBuildDate>Tue, 14 Jan 2020 23:43:37 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -212,11 +212,11 @@
 
 </description>
         <pubDate>Tue, 14 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//kernel-info</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//kernel-info</guid>
+        <link>http://localhost:4000/kernel-info</link>
+        <guid isPermaLink="true">http://localhost:4000/kernel-info</guid>
         
         
-        <category>django</category>
+        <category>linux</category>
         
       </item>
     
@@ -311,8 +311,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 14 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-12-authentication</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-12-authentication</guid>
+        <link>http://localhost:4000/drf-12-authentication</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-12-authentication</guid>
         
         
         <category>django</category>
@@ -409,8 +409,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 14 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-11-default-settings</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-11-default-settings</guid>
+        <link>http://localhost:4000/drf-11-default-settings</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-11-default-settings</guid>
         
         
         <category>django</category>
@@ -533,8 +533,8 @@ X-Forwarded-For 헤더값을 우선시함&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-10-throttling</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-10-throttling</guid>
+        <link>http://localhost:4000/drf-10-throttling</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-10-throttling</guid>
         
         
         <category>django</category>
@@ -706,8 +706,8 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-09-authentication</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-09-authentication</guid>
+        <link>http://localhost:4000/drf-09-authentication</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-09-authentication</guid>
         
         
         <category>django</category>
@@ -847,8 +847,8 @@ perform_함수명으로 추가구현가능
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-08-validate-of-serializer</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-08-validate-of-serializer</guid>
+        <link>http://localhost:4000/drf-08-validate-of-serializer</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-08-validate-of-serializer</guid>
         
         
         <category>django</category>
@@ -896,8 +896,8 @@ perform_함수명으로 추가구현가능
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-07-pagination</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-07-pagination</guid>
+        <link>http://localhost:4000/drf-07-pagination</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-07-pagination</guid>
         
         
         <category>django</category>
@@ -939,8 +939,8 @@ perform_함수명으로 추가구현가능
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-06-filtering</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-06-filtering</guid>
+        <link>http://localhost:4000/drf-06-filtering</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-06-filtering</guid>
         
         
         <category>django</category>
@@ -969,8 +969,8 @@ perform_함수명으로 추가구현가능
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-05-format-renderer</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-05-format-renderer</guid>
+        <link>http://localhost:4000/drf-05-format-renderer</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-05-format-renderer</guid>
         
         
         <category>django</category>
@@ -1070,8 +1070,8 @@ perform_함수명으로 추가구현가능
 &lt;/blockquote&gt;
 </description>
         <pubDate>Mon, 06 Aug 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-04-viewset-router</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-04-viewset-router</guid>
+        <link>http://localhost:4000/drf-04-viewset-router</link>
+        <guid isPermaLink="true">http://localhost:4000/drf-04-viewset-router</guid>
         
         
         <category>django</category>
