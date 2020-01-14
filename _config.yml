@@ -1,6 +1,6 @@
 # Site settings
-title: 톰의 삽질로그
-email: chrisjune2701@gmail.com
+title: Chrisjune blog
+email: chrisjune@gmail.com
 description: > # Writer Theme is a responsive template
  공부하며 삽질했던 내용, 정리내용을 공유합니다.
 baseurl: "" # the subpath of your site, e.g. /blog
@@ -11,11 +11,11 @@ nav_list:
   Home : ['Home', '/', 'fa-home']
   # About : ['About', '/about', 'fa-anchor']
   Contact : ['Contact', '/contact', 'fa-plane']
-  Author : ['Author', '/author/tom', 'fa-user']
-single_footer: '<p>The writer community loves your content. Writer &copy; 2018 <a href="/">latest posts</a></p>'
+  Author : ['Author', '/author/chrisjune', 'fa-user']
+single_footer: '<p>The writer community loves your content. Writer &copy; 2020 <a href="/">latest posts</a></p>'
 footer_links:
     About: ['About', '/about']
-    Writer: ['Writer 2018', '/about']
+    Writer: ['Writer 2020', '/about']
 
 # Build settings
 markdown: kramdown
