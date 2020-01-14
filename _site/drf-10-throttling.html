@@ -11,8 +11,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/drf-10-throttling">
-    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+    <link rel="canonical" href="https://chrisjune.github.io//drf-10-throttling">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="https://chrisjune.github.io//feed.xml" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
     <script>
@@ -108,23 +108,23 @@
       <li>여러 APIView내 <code class="highlighter-rouge">throttle\_scope</code>값을 읽어들여, APIView별로 다른 Scope을 적용해줍니다.</li>
     </ul>
 
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># Throttle for all APIview</span>
-  <span class="c">## settings.py`</span>
-  <span class="s">'DEFAULT_THROTTLE_CLASSES'</span><span class="p">:[</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># Throttle for all APIview
+</span>  <span class="c1">## settings.py`
+</span>  <span class="s">'DEFAULT_THROTTLE_CLASSES'</span><span class="p">:[</span>
   <span class="s">'rest_framework.throttling.UserRateThrottle'</span><span class="p">,</span>
   <span class="p">],</span>
   <span class="s">'DEFAULT_THROTTLE_RATES'</span><span class="p">:{</span>
   <span class="s">'user'</span><span class="p">:</span> <span class="s">'10/day'</span><span class="p">,</span>
   <span class="p">}</span>
 
-  <span class="c"># views.py</span>
-  <span class="kn">from</span> <span class="nn">rest_framework.throttling</span> <span class="kn">import</span> <span class="n">UserRateThrottle</span>
+  <span class="c1"># views.py
+</span>  <span class="kn">from</span> <span class="nn">rest_framework.throttling</span> <span class="kn">import</span> <span class="n">UserRateThrottle</span>
   <span class="k">class</span> <span class="nc">PostViewSet</span><span class="p">(</span><span class="n">ViewSet</span><span class="p">):</span>
   <span class="n">throttle_classes</span> <span class="o">=</span> <span class="n">UserRateThrottle</span>
 </code></pre></div>    </div>
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># Custom throttle for APIView</span>
-  <span class="c">## settings.py</span>
-  <span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># Custom throttle for APIView
+</span>  <span class="c1">## settings.py
+</span>  <span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s">'DEFAULT_THROTTLE_CLASSES'</span><span class="p">:</span> <span class="p">[</span>
   <span class="s">'rest_framework.throttling.ScopedRateThrottle'</span><span class="p">,</span>
   <span class="p">],</span>
@@ -133,8 +133,8 @@
   <span class="s">'upload'</span><span class="p">:</span> <span class="s">'20/day'</span><span class="p">,</span>
   <span class="p">},</span>
   <span class="p">}</span>
-  <span class="c">## views.py</span>
-  <span class="k">class</span> <span class="nc">ContactListView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+  <span class="c1">## views.py
+</span>  <span class="k">class</span> <span class="nc">ContactListView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
   <span class="n">throttle_scope</span> <span class="o">=</span> <span class="s">'contact'</span>
   <span class="k">class</span> <span class="nc">ContactDetailView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
   <span class="n">throttle_scope</span> <span class="o">=</span> <span class="s">'contact'</span>
@@ -152,10 +152,10 @@
           <li>m:분</li>
           <li>h:시</li>
           <li>d:일
-            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="mi">1000</span><span class="o">/</span><span class="n">d</span> <span class="c"># 하루에 1천번 호출 가능</span>
-  <span class="mi">200</span><span class="o">/</span><span class="n">h</span> <span class="c"># 시간당 200번 호출 가능</span>
-  <span class="mi">10</span><span class="o">/</span><span class="n">s</span> <span class="c"># 초당 10번 호출 가능</span>
-</code></pre></div>            </div>
+            <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="mi">1000</span><span class="o">/</span><span class="n">d</span> <span class="c1"># 하루에 1천번 호출 가능
+</span>  <span class="mi">200</span><span class="o">/</span><span class="n">h</span> <span class="c1"># 시간당 200번 호출 가능
+</span>  <span class="mi">10</span><span class="o">/</span><span class="n">s</span> <span class="c1"># 초당 10번 호출 가능
+</span></code></pre></div>            </div>
             <h4 id="client-ip">Client IP</h4>
           </li>
         </ul>
@@ -233,6 +233,12 @@ X-Forwarded-For 헤더값을 우선시함</p>
             
                 
                 <div class="similar-post">
+                    <a href="/kernel-info"><h3>Linux Command 1 - 시스템 구성 정보 확인하기</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
                     <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
                 </div>
                 
@@ -252,12 +258,6 @@ X-Forwarded-For 헤더값을 우선시함</p>
                 
                 <div class="similar-post">
                     <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
-                    <a href="/drf-07-pagination"><h3>DRF 07 - Pagination</h3></a>
                 </div>
                 
             
@@ -307,10 +307,10 @@ X-Forwarded-For 헤더값을 우선시함</p>
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-10-throttling"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="https://chrisjune.github.io//drf-10-throttling"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-10-throttling"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-10-throttling"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="https://chrisjune.github.io//drf-10-throttling"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=https://chrisjune.github.io//drf-10-throttling"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -319,6 +319,14 @@ X-Forwarded-For 헤더값을 우선시함</p>
 
     
         <div class="row read-another-section">
+    
+        
+        <a href="/kernel-info"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">Linux Command 1 - 시스템 구성 정보 확인하기</h3>
+        </div></a>
+        
     
         
         <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
@@ -357,14 +365,6 @@ X-Forwarded-For 헤더값을 우선시함</p>
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 07 - Pagination</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-06-filtering"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 06 - Filtering</h3>
         </div></a>
         
     

@@ -11,8 +11,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/drf-09-authentication">
-    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+    <link rel="canonical" href="https://chrisjune.github.io//drf-09-authentication">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="https://chrisjune.github.io//feed.xml" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
     <script>
@@ -108,19 +108,19 @@
 
 <ul>
   <li>httpie 이용시 –auth id:password로 인자 지정가능
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c">#BasicAuth 인증</span>
-  <span class="c"># Request</span>
-  <span class="err">❯</span> <span class="n">http</span> <span class="o">-</span><span class="n">a</span> <span class="n">username</span><span class="p">:</span><span class="n">password</span> <span class="o">--</span><span class="n">form</span> <span class="n">POST</span> <span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">post</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">#BasicAuth 인증
+</span>  <span class="c1"># Request
+</span>  <span class="err">❯</span> <span class="n">http</span> <span class="o">-</span><span class="n">a</span> <span class="n">username</span><span class="p">:</span><span class="n">password</span> <span class="o">--</span><span class="n">form</span> <span class="n">POST</span> <span class="n">httpbin</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">post</span>
 
-  <span class="c"># Response</span>
-  <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
+  <span class="c1"># Response
+</span>  <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="n">OK</span>
   <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="p">:</span> <span class="n">true</span>
   <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="p">:</span> <span class="o">*</span>
   <span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
   <span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">477</span>
   <span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">json</span>
   <span class="n">Date</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">31</span> <span class="n">Jul</span> <span class="mi">2018</span> <span class="mi">13</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">23</span> <span class="n">GMT</span>
-  <span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9</span><span class="o">.</span><span class="mi">0</span>
+  <span class="n">Server</span><span class="p">:</span> <span class="n">gunicorn</span><span class="o">/</span><span class="mf">19.9.0</span>
   <span class="n">Via</span><span class="p">:</span> <span class="mf">1.1</span> <span class="n">vegur</span>
 
   <span class="p">{</span>
@@ -206,23 +206,23 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">permissions</span>
 
 <span class="k">class</span> <span class="nc">IsAuthorUpdateOrReadonly</span><span class="p">(</span><span class="n">permissions</span><span class="o">.</span><span class="n">BasePermission</span><span class="p">):</span>
-    <span class="c"># 인증된 유저에 한해, 목록조회/포스팅등록을 허용</span>
-    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+    <span class="c1"># 인증된 유저에 한해, 목록조회/포스팅등록을 허용
+</span>    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span>
 
-    <span class="c"># superuser에게는 삭제 권한만 부여하고</span>
-    <span class="c"># 작성자에게는 수정 권한만 부여해봅시다.</span>
-    <span class="k">def</span> <span class="nf">has_object_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="c"># 조회 요청(GET, HEAD, OPTIONS) 에 대해서는 인증여부에 상관없이 허용</span>
-        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">permissions</span><span class="o">.</span><span class="n">SAFE_METHODS</span><span class="p">:</span>
+    <span class="c1"># superuser에게는 삭제 권한만 부여하고
+</span>    <span class="c1"># 작성자에게는 수정 권한만 부여해봅시다.
+</span>    <span class="k">def</span> <span class="nf">has_object_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="c1"># 조회 요청(GET, HEAD, OPTIONS) 에 대해서는 인증여부에 상관없이 허용
+</span>        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">permissions</span><span class="o">.</span><span class="n">SAFE_METHODS</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span>
 
-        <span class="c"># 삭제 요청의 경우, superuser에게만 허용</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'DELETE'</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_superuser</span>  <span class="c"># request.user.is_staff</span>
-
-        <span class="c"># PUT 요청에 대해, 작성자일 경우에만 요청 허용</span>
-        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">author</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="c1"># 삭제 요청의 경우, superuser에게만 허용
+</span>        <span class="k">if</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'DELETE'</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_superuser</span>  <span class="c1"># request.user.is_staff
+</span>
+        <span class="c1"># PUT 요청에 대해, 작성자일 경우에만 요청 허용
+</span>        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">author</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -282,6 +282,12 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
             
                 
                 <div class="similar-post">
+                    <a href="/kernel-info"><h3>Linux Command 1 - 시스템 구성 정보 확인하기</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
                     <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
                 </div>
                 
@@ -301,12 +307,6 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
                 
                 <div class="similar-post">
                     <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
-                    <a href="/drf-07-pagination"><h3>DRF 07 - Pagination</h3></a>
                 </div>
                 
             
@@ -356,10 +356,10 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-09-authentication"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="https://chrisjune.github.io//drf-09-authentication"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-09-authentication"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-09-authentication"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="https://chrisjune.github.io//drf-09-authentication"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=https://chrisjune.github.io//drf-09-authentication"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -368,6 +368,14 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
 
     
         <div class="row read-another-section">
+    
+        
+        <a href="/kernel-info"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">Linux Command 1 - 시스템 구성 정보 확인하기</h3>
+        </div></a>
+        
     
         
         <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
@@ -406,14 +414,6 @@ APIView의 get_object함수를 통해 object 획득 시, 체크 - 개별 GET/PUT
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 07 - Pagination</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-06-filtering"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 06 - Filtering</h3>
         </div></a>
         
     

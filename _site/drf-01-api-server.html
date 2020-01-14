@@ -11,8 +11,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/drf-01-api-server">
-    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+    <link rel="canonical" href="https://chrisjune.github.io//drf-01-api-server">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="https://chrisjune.github.io//feed.xml" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
     <script>
@@ -168,16 +168,16 @@ Via: 1.1 vegur
     </ol>
   </li>
   <li>Model
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 모델 구현 : myapp/models.py</span>
-  <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># 모델 구현 : myapp/models.py
+</span>  <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 
   <span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
       <span class="n">message</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
 </code></pre></div>    </div>
   </li>
   <li>Form
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 폼 구현 : myapp/forms.py</span>
-  <span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># 폼 구현 : myapp/forms.py
+</span>  <span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
   <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
 
   <span class="k">class</span> <span class="nc">PostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
@@ -187,20 +187,20 @@ Via: 1.1 vegur
 </code></pre></div>    </div>
   </li>
   <li>View
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 뷰 구현 : myapp/views.py</span>
-  <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">JsonResponse</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># 뷰 구현 : myapp/views.py
+</span>  <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">JsonResponse</span>
   <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">QueryDict</span>
   <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
   <span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span>
   <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
   <span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">PostForm</span>
 
-  <span class="nd">@csrf_exempt</span>
+  <span class="o">@</span><span class="n">csrf_exempt</span>
   <span class="k">def</span> <span class="nf">post_list</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
       <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'GET'</span><span class="p">:</span>
           <span class="n">qs</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
-          <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s">'pk'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">message</span><span class="p">}</span> <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>  <span class="c"># 수동 JSON 직렬화</span>
-          <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+          <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s">'pk'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="s">'message'</span><span class="p">:</span> <span class="n">post</span><span class="o">.</span><span class="n">message</span><span class="p">}</span> <span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">]</span>  <span class="c1"># 수동 JSON 직렬화
+</span>          <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
       <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
           <span class="n">form</span> <span class="o">=</span> <span class="n">PostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
           <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
@@ -209,7 +209,7 @@ Via: 1.1 vegur
           <span class="n">data</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span>
           <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 
-  <span class="nd">@csrf_exempt</span>
+  <span class="o">@</span><span class="n">csrf_exempt</span>
   <span class="k">def</span> <span class="nf">post_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
       <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">)</span>
 
@@ -229,8 +229,8 @@ Via: 1.1 vegur
 </code></pre></div>    </div>
   </li>
   <li>Urls 구현
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># URLConf 구현 : myapp/urls.py</span>
-  <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># URLConf 구현 : myapp/urls.py
+</span>  <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">url</span>
   <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">post_list</span><span class="p">,</span> <span class="n">post_detail</span>
 
   <span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
@@ -263,16 +263,16 @@ Via: 1.1 vegur
 </code></pre></div>    </div>
   </li>
   <li>Serializer
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># Serializer: myapp/serializers.py</span>
-  <span class="k">class</span> <span class="nc">PostSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># Serializer: myapp/serializers.py
+</span>  <span class="k">class</span> <span class="nc">PostSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
       <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
           <span class="n">model</span> <span class="o">=</span> <span class="n">Post</span>
           <span class="n">fields</span> <span class="o">=</span> <span class="s">'__all__'</span>
 </code></pre></div>    </div>
   </li>
   <li>View
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># 뷰 : myapp/views.py</span>
-  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># 뷰 : myapp/views.py
+</span>  <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
   <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
   <span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">PostSerializer</span>
 
@@ -282,8 +282,8 @@ Via: 1.1 vegur
 </code></pre></div>    </div>
   </li>
   <li>URL
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># URL : myapp/urls.py</span>
-  <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># URL : myapp/urls.py
+</span>  <span class="kn">from</span> <span class="nn">django.conf.urls</span> <span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">url</span>
   <span class="kn">from</span> <span class="nn">rest_framework.routers</span> <span class="kn">import</span> <span class="n">DefaultRouter</span>
   <span class="kn">from</span> <span class="nn">.views</span> <span class="kn">import</span> <span class="n">PostViewSet</span>
 
@@ -346,6 +346,12 @@ Via: 1.1 vegur
             
                 
                 <div class="similar-post">
+                    <a href="/kernel-info"><h3>Linux Command 1 - 시스템 구성 정보 확인하기</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
                     <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
                 </div>
                 
@@ -365,12 +371,6 @@ Via: 1.1 vegur
                 
                 <div class="similar-post">
                     <a href="/drf-09-authentication"><h3>DRF 09 - Authentication</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
-                    <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
                 </div>
                 
             
@@ -420,10 +420,10 @@ Via: 1.1 vegur
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-01-api-server"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="https://chrisjune.github.io//drf-01-api-server"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-01-api-server"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-01-api-server"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="https://chrisjune.github.io//drf-01-api-server"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=https://chrisjune.github.io//drf-01-api-server"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -432,6 +432,14 @@ Via: 1.1 vegur
 
     
         <div class="row read-another-section">
+    
+        
+        <a href="/kernel-info"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">Linux Command 1 - 시스템 구성 정보 확인하기</h3>
+        </div></a>
+        
     
         
         <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
@@ -470,14 +478,6 @@ Via: 1.1 vegur
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 08 - Serializer 유효성검사</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-07-pagination"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 07 - Pagination</h3>
         </div></a>
         
     

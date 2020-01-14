@@ -2,87 +2,91 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
-        <loc>http://localhost:4000/drf-12-authentication</loc>
+        <loc>https://chrisjune.github.io//kernel-info</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-11-default-settings</loc>
+        <loc>https://chrisjune.github.io//drf-12-authentication</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-10-throttling</loc>
+        <loc>https://chrisjune.github.io//drf-11-default-settings</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-09-authentication</loc>
+        <loc>https://chrisjune.github.io//drf-10-throttling</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-08-validate-of-serializer</loc>
+        <loc>https://chrisjune.github.io//drf-09-authentication</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-07-pagination</loc>
+        <loc>https://chrisjune.github.io//drf-08-validate-of-serializer</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-06-filtering</loc>
+        <loc>https://chrisjune.github.io//drf-07-pagination</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-05-format-renderer</loc>
+        <loc>https://chrisjune.github.io//drf-06-filtering</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-04-viewset-router</loc>
+        <loc>https://chrisjune.github.io//drf-05-format-renderer</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-03-json-res-view</loc>
+        <loc>https://chrisjune.github.io//drf-04-viewset-router</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-02-json-serialization</loc>
+        <loc>https://chrisjune.github.io//drf-03-json-res-view</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/drf-01-api-server</loc>
+        <loc>https://chrisjune.github.io//drf-02-json-serialization</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/encoding-and-decoding</loc>
+        <loc>https://chrisjune.github.io//drf-01-api-server</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/django-4-view</loc>
+        <loc>https://chrisjune.github.io//encoding-and-decoding</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/django-3-regex</loc>
+        <loc>https://chrisjune.github.io//django-4-view</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/google-inception-model</loc>
+        <loc>https://chrisjune.github.io//django-3-regex</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/git-from-hell</loc>
+        <loc>https://chrisjune.github.io//google-inception-model</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/elastic-search-query</loc>
+        <loc>https://chrisjune.github.io//git-from-hell</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/elastic-search-basic</loc>
+        <loc>https://chrisjune.github.io//elastic-search-query</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/css-with-superpowers</loc>
+        <loc>https://chrisjune.github.io//elastic-search-basic</loc>
     </url>
     
     <url>
-        <loc>http://localhost:4000/why-react-js-will-change-the-world</loc>
+        <loc>https://chrisjune.github.io//css-with-superpowers</loc>
+    </url>
+    
+    <url>
+        <loc>https://chrisjune.github.io//why-react-js-will-change-the-world</loc>
     </url>
     
 
@@ -90,7 +94,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/about/</loc>
+        <loc>https://chrisjune.github.io//about/</loc>
     </url>
     
     
@@ -98,7 +102,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/author/tom/</loc>
+        <loc>https://chrisjune.github.io//author/tom/</loc>
     </url>
     
     
@@ -106,7 +110,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/contact/</loc>
+        <loc>https://chrisjune.github.io//contact/</loc>
     </url>
     
     
@@ -116,7 +120,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/home-alt-2/</loc>
+        <loc>https://chrisjune.github.io//home-alt-2/</loc>
     </url>
     
     
@@ -124,7 +128,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/home-alt/</loc>
+        <loc>https://chrisjune.github.io//home-alt/</loc>
     </url>
     
     
@@ -132,7 +136,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/leadership/</loc>
+        <loc>https://chrisjune.github.io//category/coding/</loc>
     </url>
     
     
@@ -140,7 +144,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/django/</loc>
+        <loc>https://chrisjune.github.io//category/leadership/</loc>
     </url>
     
     
@@ -148,7 +152,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/travel/</loc>
+        <loc>https://chrisjune.github.io//category/django/</loc>
     </url>
     
     
@@ -156,7 +160,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/</loc>
+        <loc>https://chrisjune.github.io//category/storytime/</loc>
     </url>
     
     
@@ -164,7 +168,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/storytime/</loc>
+        <loc>https://chrisjune.github.io//</loc>
     </url>
     
     
@@ -172,7 +176,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/css/</loc>
+        <loc>https://chrisjune.github.io//category/travel/</loc>
     </url>
     
     
@@ -180,7 +184,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/js/</loc>
+        <loc>https://chrisjune.github.io//category/css/</loc>
     </url>
     
     
@@ -188,7 +192,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/life/</loc>
+        <loc>https://chrisjune.github.io//category/js/</loc>
     </url>
     
     
@@ -196,7 +200,7 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/journey/</loc>
+        <loc>https://chrisjune.github.io//category/life/</loc>
     </url>
     
     
@@ -204,7 +208,15 @@
     
     
     <url>
-        <loc>http://localhost:4000/category/coding/</loc>
+        <loc>https://chrisjune.github.io//category/journey/</loc>
+    </url>
+    
+    
+    
+    
+    
+    <url>
+        <loc>https://chrisjune.github.io//category/linux/</loc>
     </url>
     
     

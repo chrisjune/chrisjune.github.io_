@@ -11,8 +11,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/elastic-search-query">
-    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+    <link rel="canonical" href="https://chrisjune.github.io//elastic-search-query">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="https://chrisjune.github.io//feed.xml" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
     <script>
@@ -84,8 +84,8 @@
   <li>“_source”: select에서 보여줄 컬럼값들
     <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">GET</span><span class="w"> </span><span class="err">/dev-product/_search</span><span class="w">
 </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"query"</span><span class="p">:{</span><span class="s2">"match_all"</span><span class="p">:{}},</span><span class="w">
-  </span><span class="s2">"_source"</span><span class="p">:[</span><span class="s2">"sell_price"</span><span class="p">,</span><span class="s2">"item_stock_status"</span><span class="p">]</span><span class="w">
+  </span><span class="nl">"query"</span><span class="p">:{</span><span class="nl">"match_all"</span><span class="p">:{}},</span><span class="w">
+  </span><span class="nl">"_source"</span><span class="p">:[</span><span class="s2">"sell_price"</span><span class="p">,</span><span class="s2">"item_stock_status"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>    </div>
   </li>
@@ -97,12 +97,12 @@
   <li>검색된 결과중 Item_name만 출력
     <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">GET</span><span class="w"> </span><span class="err">/dev-product/_search</span><span class="w">
 </span><span class="p">{</span><span class="w">
-</span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+</span><span class="nl">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">},</span><span class="w">
-</span><span class="s2">"_source"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+</span><span class="nl">"_source"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="s2">"item_name"</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -118,28 +118,28 @@
   <li>판매가격이 만원또는 5만원인 상품중 카테고리가 가방이 아닌 상품검색
     <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">GET</span><span class="w"> </span><span class="err">dev-product/_search</span><span class="w">
 </span><span class="p">{</span><span class="w">
-</span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+</span><span class="nl">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+        </span><span class="nl">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">},</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="w">
+        </span><span class="nl">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="mi">50000</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"must_not"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"category_keyword"</span><span class="p">:</span><span class="w"> </span><span class="s2">"가방"</span><span class="w">
+    </span><span class="nl">"must_not"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"category_keyword"</span><span class="p">:</span><span class="w"> </span><span class="s2">"가방"</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">},</span><span class="w">
-</span><span class="s2">"_source"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+</span><span class="nl">"_source"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="s2">"item_name"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"sell_price"</span><span class="w">
 </span><span class="p">]</span><span class="w">
@@ -153,16 +153,16 @@
   <li>판매가격이 2천원에서 2만원사이인 상품을 조회
     <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">GET</span><span class="w"> </span><span class="err">/dev-product/_search</span><span class="w">
 </span><span class="p">{</span><span class="w">
-</span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"match_all"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+</span><span class="nl">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"match_all"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"gte"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"lte"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"range"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"sell_price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"gte"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"lte"</span><span class="p">:</span><span class="w"> </span><span class="mi">20000</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
@@ -219,6 +219,12 @@
             
                 
                 <div class="similar-post">
+                    <a href="/kernel-info"><h3>Linux Command 1 - 시스템 구성 정보 확인하기</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
                     <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
                 </div>
                 
@@ -238,12 +244,6 @@
                 
                 <div class="similar-post">
                     <a href="/drf-09-authentication"><h3>DRF 09 - Authentication</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
-                    <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
                 </div>
                 
             
@@ -293,10 +293,10 @@
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/elastic-search-query"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="https://chrisjune.github.io//elastic-search-query"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/elastic-search-query"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/elastic-search-query"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="https://chrisjune.github.io//elastic-search-query"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=https://chrisjune.github.io//elastic-search-query"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -305,6 +305,14 @@
 
     
         <div class="row read-another-section">
+    
+        
+        <a href="/kernel-info"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">Linux Command 1 - 시스템 구성 정보 확인하기</h3>
+        </div></a>
+        
     
         
         <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
@@ -343,14 +351,6 @@
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 08 - Serializer 유효성검사</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-07-pagination"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 07 - Pagination</h3>
         </div></a>
         
     

@@ -11,8 +11,8 @@
 
     <link rel="stylesheet" href="/css/main.css">
 
-    <link rel="canonical" href="http://localhost:4000/drf-04-viewset-router">
-    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="http://localhost:4000/feed.xml" />
+    <link rel="canonical" href="https://chrisjune.github.io//drf-04-viewset-router">
+    <link rel="alternate" type="application/rss+xml" title="톰의 삽질로그" href="https://chrisjune.github.io//feed.xml" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123601360-1"></script>
     <script>
@@ -84,14 +84,14 @@
   <li>하지만, 하나의 URL에서 모두 처리하는 것은 불가능하다. 왜냐하면, 일반적인 REST API설계에서 벗어나기 때문이다.</li>
   <li>Viewset은 <code class="highlighter-rouge">.as_view({'http_method':'member_fuction'})</code>를 호출하여 하나의 뷰함수를 하나의 URL에 매핑함</li>
   <li>Viewset URL 매핑 맛보기
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c"># list route</span>
-  <span class="n">post_list</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">as_view</span><span class="p">({</span>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1"># list route
+</span>  <span class="n">post_list</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">as_view</span><span class="p">({</span>
   <span class="s">'get'</span><span class="p">:</span> <span class="s">'list'</span><span class="p">,</span>
       <span class="s">'post'</span><span class="p">:</span> <span class="s">'create'</span><span class="p">,</span>
   <span class="p">})</span>
 
-  <span class="c"># detail route</span>
-  <span class="n">post_detail</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">as_view</span><span class="p">({</span>
+  <span class="c1"># detail route
+</span>  <span class="n">post_detail</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">as_view</span><span class="p">({</span>
       <span class="s">'get'</span><span class="p">:</span> <span class="s">'retrieve'</span><span class="p">,</span>
       <span class="s">'put'</span><span class="p">:</span> <span class="s">'update'</span><span class="p">,</span>
       <span class="s">'patch'</span><span class="p">:</span> <span class="s">'partial_update'</span><span class="p">,</span>
@@ -140,23 +140,23 @@
       <span class="n">queryset</span> <span class="o">=</span> <span class="n">PostViewSet</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span>
       <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PostSerializer</span>
 
-      <span class="nd">@list_route</span><span class="p">()</span>  <span class="c"># 목록 단위로 적용할 API이기에, list_route 장식자 사용</span>
-      <span class="k">def</span> <span class="nf">public_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-          <span class="n">qs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">is_public</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c"># Post모델에 is_public 필드가 있을 경우</span>
-          <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+      <span class="o">@</span><span class="n">list_route</span><span class="p">()</span>  <span class="c1"># 목록 단위로 적용할 API이기에, list_route 장식자 사용
+</span>      <span class="k">def</span> <span class="nf">public_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+          <span class="n">qs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queryset</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="n">is_public</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c1"># Post모델에 is_public 필드가 있을 경우
+</span>          <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
           <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-  <span class="c">#URL 매핑은 `/prefix/함수명/`으로서 `/post/public_list/`</span>
+  <span class="c1">#URL 매핑은 `/prefix/함수명/`으로서 `/post/public_list/`
+</span>
 
-
-      <span class="nd">@detail_route</span><span class="p">(</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'patch'</span><span class="p">])</span>  <span class="c"># Record 단위로 적용할 API이기에, detail_route 장식자 사용</span>
-      <span class="k">def</span> <span class="nf">set_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+      <span class="o">@</span><span class="n">detail_route</span><span class="p">(</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">'patch'</span><span class="p">])</span>  <span class="c1"># Record 단위로 적용할 API이기에, detail_route 장식자 사용
+</span>      <span class="k">def</span> <span class="nf">set_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
           <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
           <span class="n">instance</span><span class="o">.</span><span class="n">is_public</span> <span class="o">=</span> <span class="bp">True</span>
           <span class="n">instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
           <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
           <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-  <span class="c"># URL 매핑은 `/prefix/{pk}/함수명/`으로서 `/post/{pk}/set_public/`</span>
-</code></pre></div>    </div>
+  <span class="c1"># URL 매핑은 `/prefix/{pk}/함수명/`으로서 `/post/{pk}/set_public/`
+</span></code></pre></div>    </div>
   </li>
 </ul>
 
@@ -210,6 +210,12 @@
             
                 
                 <div class="similar-post">
+                    <a href="/kernel-info"><h3>Linux Command 1 - 시스템 구성 정보 확인하기</h3></a>
+                </div>
+                
+            
+                
+                <div class="similar-post">
                     <a href="/drf-12-authentication"><h3>DRF 12 - DRF Authentication</h3></a>
                 </div>
                 
@@ -229,12 +235,6 @@
                 
                 <div class="similar-post">
                     <a href="/drf-09-authentication"><h3>DRF 09 - Authentication</h3></a>
-                </div>
-                
-            
-                
-                <div class="similar-post">
-                    <a href="/drf-08-validate-of-serializer"><h3>DRF 08 - Serializer 유효성검사</h3></a>
                 </div>
                 
             
@@ -284,10 +284,10 @@
             <div class="social">
                 <p>Share this article</a>
                 <div class="social-links">
-                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="http://localhost:4000/drf-04-viewset-router"><i class="fa fa-twitter"></i></a>
+                    <a class="social-icon" href="#" data-platform="twitter" data-message="" data-url="https://chrisjune.github.io//drf-04-viewset-router"><i class="fa fa-twitter"></i></a>
 
-                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="http://localhost:4000/drf-04-viewset-router"><i class="fa fa-facebook-official"></i></a>
-                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=http://localhost:4000/drf-04-viewset-router"><i class="fa fa-envelope"></i></a>
+                    <a class="social-icon" href="#" data-platform="facebook" data-message="" data-url="https://chrisjune.github.io//drf-04-viewset-router"><i class="fa fa-facebook-official"></i></a>
+                    <a class="social-icon" data-platform="mail"  href="mailto:chrisjune2701@gmail.com?body=https://chrisjune.github.io//drf-04-viewset-router"><i class="fa fa-envelope"></i></a>
                 </div>
             </div>
         </div>
@@ -296,6 +296,14 @@
 
     
         <div class="row read-another-section">
+    
+        
+        <a href="/kernel-info"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
+            <div class="overlay"></div>
+            <img src='/img/recommend-fire.jpg'>
+            <h3 class="read-another">Linux Command 1 - 시스템 구성 정보 확인하기</h3>
+        </div></a>
+        
     
         
         <a href="/drf-12-authentication"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
@@ -334,14 +342,6 @@
             <div class="overlay"></div>
             <img src='/img/recommend-fire.jpg'>
             <h3 class="read-another">DRF 08 - Serializer 유효성검사</h3>
-        </div></a>
-        
-    
-        
-        <a href="/drf-07-pagination"><div class="col-sm-6 col-md-2 no-gutter read-another-container">
-            <div class="overlay"></div>
-            <img src='/img/recommend-fire.jpg'>
-            <h3 class="read-another">DRF 07 - Pagination</h3>
         </div></a>
         
     
