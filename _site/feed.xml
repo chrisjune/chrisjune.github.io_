@@ -6,8 +6,8 @@
 </description>
     <link>https://chrisjune.github.io//</link>
     <atom:link href="https://chrisjune.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Jan 2020 23:59:03 +0900</pubDate>
-    <lastBuildDate>Tue, 14 Jan 2020 23:59:03 +0900</lastBuildDate>
+    <pubDate>Wed, 15 Jan 2020 21:12:47 +0900</pubDate>
+    <lastBuildDate>Wed, 15 Jan 2020 21:12:47 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -206,6 +206,39 @@
     &lt;ul&gt;
       &lt;li&gt;네트워크 카드 커널 드라이버 정보 출력&lt;/li&gt;
       &lt;li&gt;드라이버 버전, 펌웨어 정보 확인가능&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;after-study&quot;&gt;After study&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CPU
+    &lt;ul&gt;
+      &lt;li&gt;C-state
+        &lt;ul&gt;
+          &lt;li&gt;CPU의 상태를 나타내며, G0(ON) -&amp;gt; G1(MID) -&amp;gt; G2(OFF)&lt;/li&gt;
+          &lt;li&gt;G0 안에서 C0~C7…순으로 Active한 상태에서 조금씩 멀어진다&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Socket -&amp;gt; Core
+        &lt;ul&gt;
+          &lt;li&gt;코어는 각 소켓마다 존재하는 컴퓨팅 코어 개수&lt;/li&gt;
+          &lt;li&gt;코어는 Intel에서 지원하는 하이퍼스레드 기술을 활용하여 1코어를 2코어 처럼 활용할 수 있도록&lt;/li&gt;
+          &lt;li&gt;효율을 높이는 기술을 사용한다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Network
+    &lt;ul&gt;
+      &lt;li&gt;RingBuffer
+        &lt;ul&gt;
+          &lt;li&gt;네트워크 카드가 패킷을 받으면 바로 저장하는 저장소&lt;/li&gt;
+          &lt;li&gt;이후에 소켓 버퍼로 담기기 때문에, Ring buffer가 병목의 지점이 될 수 있다&lt;/li&gt;
+          &lt;li&gt;네트워크 속도 최적화를 위해서는, 버퍼의 Max값과 Current값을 같게해주어야 한다.&lt;/li&gt;
+          &lt;li&gt;tcp-offload: 네트워크 카드가 직적 패킷을 분해하는 작업을 하는데, off해주어야 패킷 유실을 막을 수 있다.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
