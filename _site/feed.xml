@@ -6,9 +6,110 @@
 </description>
     <link>https://chrisjune.github.io//</link>
     <atom:link href="https://chrisjune.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 15 Jan 2020 21:12:47 +0900</pubDate>
-    <lastBuildDate>Wed, 15 Jan 2020 21:12:47 +0900</lastBuildDate>
+    <pubDate>Tue, 21 Jan 2020 23:04:41 +0900</pubDate>
+    <lastBuildDate>Tue, 21 Jan 2020 23:04:41 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Linux Command 2 - top을 통해 살펴보는 프로세스 정보들</title>
+        <description>&lt;p&gt;&lt;strong&gt;top을 통해 살펴보는 프로세스 정보들&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;21-시스템의-상태-살피기&quot;&gt;2.1 시스템의 상태 살피기&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;top -b&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;-b 옵션으로 기존 정보 그대로 유지
+  ```shell script
+  top - 12:28:05 up 1 min,  0 users,  load average: 0.68, 0.31, 0.11
+  Tasks:   2 total,   1 running,   1 sleeping,   0 stopped,   0 zombie
+  %Cpu(s): 12.2 us,  7.8 sy,  0.0 ni, 76.7 id,  2.3 wa,  0.0 hi,  0.9 si,  0.0 st
+  KiB Mem :  2047132 total,   403320 free,   756340 used,   887472 buff/cache
+  KiB Swap:  1048572 total,  1048572 free,        0 used.  1141920 avail Mem&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+    1 root      20   0   18504   3296   2876 S   0.0  0.2   0:00.03 bash
+   15 root      20   0   36480   3036   2684 R   0.0  0.1   0:00.00 top
+  ```&lt;/p&gt;
+    &lt;ol&gt;
+      &lt;li&gt;Up: 서버가 구동된 시각과 구동시간&lt;/li&gt;
+      &lt;li&gt;Users: 로그인해있는 user의 수&lt;/li&gt;
+      &lt;li&gt;Load average: 서버에서 실행중 또는 대기중인 프로세스의 수의 합&lt;/li&gt;
+      &lt;li&gt;Tasks: 구동중인 프로세스의 개수&lt;/li&gt;
+      &lt;li&gt;CPU, Memory, Swap memory의 사용량을 나타냄&lt;/li&gt;
+      &lt;li&gt;PR: 프로세스의 실행 우선순위. 낮은 수일 수록 높은 우선순위를 나타낸다.&lt;/li&gt;
+      &lt;li&gt;NI: PR값을 얼만큼 조절할 것인지 결정. PR값에 더하여 우선순위를 조정한다&lt;/li&gt;
+      &lt;li&gt;VIRT, RES, SHR: 프로세스가 사용하는 메모리양을 나타내는 정보. 메모리 누수를 확인할 수 있는 부분!&lt;/li&gt;
+      &lt;li&gt;S: 프로세스의 상태를 나타내는 정보
+        &lt;h2 id=&quot;22-virt-res-shr&quot;&gt;2.2 VIRT, RES, SHR&lt;/h2&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;VIRT&lt;/code&gt;:
+    &lt;ul&gt;
+      &lt;li&gt;task(프로세스)가 사용하고 있는 virtual memory의 전체용량&lt;/li&gt;
+      &lt;li&gt;프로세스에 할당된 가상 메모리 전체의 크기&lt;/li&gt;
+      &lt;li&gt;실제로 할당되지 않은 가상의 공간이기 때문에 크기에 따른 제약이나 문제가 발생하지 않는다&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RES&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;task(프로세스)가 사용하고 있는 physical memory의 용량&lt;/li&gt;
+      &lt;li&gt;실제로 메모리에 올려서 사용하고 있는 크기&lt;/li&gt;
+      &lt;li&gt;메모리 점유율이 높은 프로세스는 RES를 확인해야 한다&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;SHR&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;다른 프로세스와 공유하고 있는 shared memory의 용량&lt;/li&gt;
+      &lt;li&gt;예시, 리눅스 glibc 라이브러리
+        &lt;h2 id=&quot;23-virt와-res그리고-memory-commit의-개념&quot;&gt;2.3 VIRT와 RES그리고 Memory Commit의 개념&lt;/h2&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Memory Commit&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;프로세스는 독립된 작업공간이 필요하기 때문에 Virtual memory 공간을 할당받고, 실제로 메모리에 쓰게될 때 할당하게 된다&lt;/li&gt;
+      &lt;li&gt;커널로부터 메모리를 할당 받고 메모리 주소를 전달받지만, 실제 물리메모리에 할당하지 않는 동작방식&lt;/li&gt;
+      &lt;li&gt;virt: 가상메모리는 프로세스가 커널로부터 사용을 예약받은 메모리&lt;/li&gt;
+      &lt;li&gt;malloc()과 같은 시스템 콜로 자신이 필요로 하는 메모리할당을 요청&lt;/li&gt;
+      &lt;li&gt;가용용량을 확인 후 가상메모리 주소를 전달. 하지만 실제 물리 메모리에 할당하지 않음&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Page Table&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;물리 메모리와 가상메모리가 매핑된 커널 전역 변수&lt;/li&gt;
+      &lt;li&gt;프로세스에 할당된 가상메모리에 실제 쓰기 작업을 하면 page fault가 발생&lt;/li&gt;
+      &lt;li&gt;이때 물리 메모리에 가상 메모리를 매핑함&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Memory Commit을 사용하는 이유&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;COW(Copy on Write)를 사용하기 위하여&lt;/li&gt;
+      &lt;li&gt;COW
+        &lt;ul&gt;
+          &lt;li&gt;메모리 리소스를 효율적으로 쓰기 위하여 프로세스가 복사될 때, 복사된 프로세스는 기존의 메모리 리소스를 바라보고 있다가&lt;/li&gt;
+          &lt;li&gt;프로세스가 리소스에 쓰는작업이 될때, 복사를 하는 동작 방식
+            &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# x and y use the same buffer 
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# now y use a different buffer, x usee the same old buffer.
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 21 Jan 2020 00:00:00 +0900</pubDate>
+        <link>https://chrisjune.github.io//kernel-02-top</link>
+        <guid isPermaLink="true">https://chrisjune.github.io//kernel-02-top</guid>
+        
+        
+        <category>linux</category>
+        
+      </item>
     
       <item>
         <title>Linux Command 1 - 시스템 구성 정보 확인하기</title>
@@ -245,8 +346,8 @@
 
 </description>
         <pubDate>Tue, 14 Jan 2020 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//kernel-info</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//kernel-info</guid>
+        <link>https://chrisjune.github.io//kernel-01-info</link>
+        <guid isPermaLink="true">https://chrisjune.github.io//kernel-01-info</guid>
         
         
         <category>linux</category>
@@ -1004,107 +1105,6 @@ perform_함수명으로 추가구현가능
         <pubDate>Sat, 13 Oct 2018 00:00:00 +0900</pubDate>
         <link>https://chrisjune.github.io//drf-05-format-renderer</link>
         <guid isPermaLink="true">https://chrisjune.github.io//drf-05-format-renderer</guid>
-        
-        
-        <category>django</category>
-        
-      </item>
-    
-      <item>
-        <title>DRF 04 - Viewset과 Router</title>
-        <description>&lt;p&gt;&lt;strong&gt;Viewset은 한번에 하나의 URL만 매핑한다. Router를 활용하여 2개 URL에 매핑하는 방법을 알아본다.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;viewset&quot;&gt;ViewSet&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;일반적으로 CBV는 하나의 View(URL)만 처리한다&lt;/li&gt;
-  &lt;li&gt;Viewset은 CBV의 확장 형태로 목록단위와 Record단위 View를 처리한다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;list&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;create&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;retrieve&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;update&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;partial_update&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;destory&lt;/code&gt; 함수를 모두 지원한다.&lt;/li&gt;
-  &lt;li&gt;하지만, 하나의 URL에서 모두 처리하는 것은 불가능하다. 왜냐하면, 일반적인 REST API설계에서 벗어나기 때문이다.&lt;/li&gt;
-  &lt;li&gt;Viewset은 &lt;code class=&quot;highlighter-rouge&quot;&gt;.as_view({'http_method':'member_fuction'})&lt;/code&gt;를 호출하여 하나의 뷰함수를 하나의 URL에 매핑함&lt;/li&gt;
-  &lt;li&gt;Viewset URL 매핑 맛보기
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;c1&quot;&gt;# list route
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;post_list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostViewSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as_view&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;'get'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'list'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;'post'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'create'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# detail route
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;post_detail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostViewSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as_view&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;'get'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'retrieve'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;'put'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'update'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;'patch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'partial_update'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;s&quot;&gt;'delete'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'destroy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;router를-활용하여-여러개의-view-하나의-url-매핑&quot;&gt;Router를 활용하여 여러개의 View 하나의 URL 매핑&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Router는 Viewset에 두개 URL에 매핑해준다.&lt;/li&gt;
-  &lt;li&gt;viewset이 지원하는 메소드에 대해서 URL매핑을 수행한다.&lt;/li&gt;
-  &lt;li&gt;list_route: 데이터 리스트 출력, 데이터 생성&lt;/li&gt;
-  &lt;li&gt;detail_route: 상세 데이터 출력, 데이터 수정, 데이터 부분수정, 데이터 삭제
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;list router&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;/prefix/&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;detail router&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;/prefix/pk/&lt;/code&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Router 맛보기
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;rest_framework.routers&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DefaultRouter&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;router&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DefaultRouter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r'prefix'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostViewSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;urlpatterns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;router&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;urls&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;hr /&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;데코레이터를-활용하여-viewset에-custom-view-추가&quot;&gt;데코레이터를 활용하여 Viewset에 Custom View 추가&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;list route&lt;/code&gt;와 &lt;code class=&quot;highlighter-rouge&quot;&gt;detail route&lt;/code&gt;에 API추가&lt;/li&gt;
-  &lt;li&gt;Viewset내에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;@list_route&lt;/code&gt;와 &lt;code class=&quot;highlighter-rouge&quot;&gt;@detail_route&lt;/code&gt; 데코레이터로 구현&lt;/li&gt;
-  &lt;li&gt;URL매핑은 데코레이터에 따라 Router에서 자동 매핑됨&lt;/li&gt;
-  &lt;li&gt;Custom Vivew 맛보기
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;rest_framework.decorators&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;detail_route&lt;/span&gt;
-  &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;rest_framework.response&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Response&lt;/span&gt;
-
-
-  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;PostViewSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ModelViewSet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;queryset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostViewSet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objects&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;serializer_class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PostSerializer&lt;/span&gt;
-
-      &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;list_route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 목록 단위로 적용할 API이기에, list_route 장식자 사용
-&lt;/span&gt;      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;public_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;qs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;queryset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;is_public&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Post모델에 is_public 필드가 있을 경우
-&lt;/span&gt;          &lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_serializer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;many&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-          &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#URL 매핑은 `/prefix/함수명/`으로서 `/post/public_list/`
-&lt;/span&gt;
-
-      &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;detail_route&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;methods&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'patch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Record 단위로 적용할 API이기에, detail_route 장식자 사용
-&lt;/span&gt;      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_public&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;is_public&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_serializer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-          &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;serializer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# URL 매핑은 `/prefix/{pk}/함수명/`으로서 `/post/{pk}/set_public/`
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;본 내용은 &lt;a href=&quot;https://www.askcompany.kr/&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;askDjango&lt;/code&gt;&lt;/a&gt;강좌를 참고하였습니다&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Mon, 06 Aug 2018 00:00:00 +0900</pubDate>
-        <link>https://chrisjune.github.io//drf-04-viewset-router</link>
-        <guid isPermaLink="true">https://chrisjune.github.io//drf-04-viewset-router</guid>
         
         
         <category>django</category>
