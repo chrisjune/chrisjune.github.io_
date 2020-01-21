@@ -6,8 +6,8 @@
 </description>
     <link>https://chrisjune.github.io//</link>
     <atom:link href="https://chrisjune.github.io//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Jan 2020 23:04:41 +0900</pubDate>
-    <lastBuildDate>Tue, 21 Jan 2020 23:04:41 +0900</lastBuildDate>
+    <pubDate>Wed, 22 Jan 2020 07:09:57 +0900</pubDate>
+    <lastBuildDate>Wed, 22 Jan 2020 07:09:57 +0900</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -37,10 +37,10 @@
       &lt;li&gt;Load average: 서버에서 실행중 또는 대기중인 프로세스의 수의 합&lt;/li&gt;
       &lt;li&gt;Tasks: 구동중인 프로세스의 개수&lt;/li&gt;
       &lt;li&gt;CPU, Memory, Swap memory의 사용량을 나타냄&lt;/li&gt;
-      &lt;li&gt;PR: 프로세스의 실행 우선순위. 낮은 수일 수록 높은 우선순위를 나타낸다.&lt;/li&gt;
-      &lt;li&gt;NI: PR값을 얼만큼 조절할 것인지 결정. PR값에 더하여 우선순위를 조정한다&lt;/li&gt;
-      &lt;li&gt;VIRT, RES, SHR: 프로세스가 사용하는 메모리양을 나타내는 정보. 메모리 누수를 확인할 수 있는 부분!&lt;/li&gt;
-      &lt;li&gt;S: 프로세스의 상태를 나타내는 정보
+      &lt;li&gt;PR(priority): 프로세스의 실행 우선순위. 낮은 수일 수록 높은 우선순위를 나타낸다.&lt;/li&gt;
+      &lt;li&gt;NI(nice): PR값을 얼만큼 조절할 것인지 결정. PR값에 더하여 우선순위를 조정한다&lt;/li&gt;
+      &lt;li&gt;VIRT(virtual), RES(resident), SHR(shared): 프로세스가 사용하는 메모리양을 나타내는 정보. 메모리 누수를 확인할 수 있는 부분!&lt;/li&gt;
+      &lt;li&gt;S(stats): 프로세스의 상태를 나타내는 정보
         &lt;h2 id=&quot;22-virt-res-shr&quot;&gt;2.2 VIRT, RES, SHR&lt;/h2&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
@@ -95,6 +95,106 @@
 &lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# now y use a different buffer, x usee the same old buffer.
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
           &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fork()를 하게 되면&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;fork(): 현재 실행중인 프로세스를 복제한다, 복제된 프로세스는 메모리 commit을 하여 리소스를 쉐어한다&lt;/li&gt;
+      &lt;li&gt;exec(): virt -&amp;gt; res로 변하면서 다른 프로세스로 변한다&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vm.overcommit_memory&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;memory commit 비율이 높으면 부하를 줄 수 있기 때문에 파라미터로 조절가능&lt;/li&gt;
+      &lt;li&gt;0: default, MAX = &lt;code class=&quot;highlighter-rouge&quot;&gt;page cache + swap메모리 가용공간 + slab reclaimable&lt;/code&gt;
+        &lt;ul&gt;
+          &lt;li&gt;리눅스는 기본적으로 가용메모리를 캐쉬로 사용한다&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Page Cache&lt;/code&gt;
+            &lt;ul&gt;
+              &lt;li&gt;물리적인 저장장치, 통신장치와 데이터를 주고받는 IO 속도를 높이기 위하여 데이터를 미리 메모리에 적재한다&lt;/li&gt;
+              &lt;li&gt;이때 파일 단위를 4KB크기의 Page로 관리하는데, 이를 page cache라고 한다&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Slab allocator&lt;/code&gt;
+            &lt;ul&gt;
+              &lt;li&gt;영구적이지 않은 커널, 드라이버, 파일시스템등의 데이터에 자원을 할당하는 자원할당자&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cat /proc/meminfo&lt;/code&gt;
+  &lt;code class=&quot;highlighter-rouge&quot;&gt;shell script
+  root@4bb32181ff3f:/# cat /proc/meminfo
+  MemTotal:        2047132 kB
+  MemFree:          303716 kB
+  MemAvailable:    1100584 kB
+  Buffers:           44056 kB
+  ...
+  Slab:              66148 kB
+  SReclaimable:      33104 kB
+ &lt;/code&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;1: 계산없이 무조건 commit을 허용한다. 메모리 누수가 있는 프로세스는 시스템 응답불가 현상을 일으킬 수 있다.&lt;/li&gt;
+      &lt;li&gt;2: vm.overcommit_ratio 비율과 swap의 크기로 계산한다
+##2.4 프로세스의 상태 보기&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Status
+    &lt;ul&gt;
+      &lt;li&gt;D: uninterruptible sleep
+        &lt;ul&gt;
+          &lt;li&gt;디스크, 네트워크 IO를 사용하기 때문에, 특정 요청에 대한 응답을 기다려야 하는 상태&lt;/li&gt;
+          &lt;li&gt;Run queue에서 IO작업을 요청하고 wait queue로 이동한다&lt;/li&gt;
+          &lt;li&gt;R -&amp;gt; IO 요청 -&amp;gt; D -&amp;gt;  wait queue로 이동&lt;/li&gt;
+          &lt;li&gt;R로 돌아갈 프로세스이기 때문에 시스템 부하계산에 포함된다&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;R: running
+        &lt;ul&gt;
+          &lt;li&gt;CPU자원을 소모하는중&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;S: sleeping
+        &lt;ul&gt;
+          &lt;li&gt;D와의 차이는 요청한 리소스를 즉시 사용할 수 있는지 여부&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sleep()&lt;/code&gt; 또는 콘솔 입력을 기다리는 경우, 특정 요청에 대한 응답을 기다리는 것이 아니기 때문에
+  언제 signal이 들어올지 모르기 때문에 언제든 signal을 받을 수 있도록 대기하는 상태&lt;/li&gt;
+          &lt;li&gt;시스템에 큰 영향을 끼치진 않는다&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;T: traced or stopped
+        &lt;ul&gt;
+          &lt;li&gt;strace등으로 프로세스의 시스템콜을 추적하는 상태, 보통 보기 어려운 상태&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Z: zombie
+        &lt;ul&gt;
+          &lt;li&gt;부모 프로세스가 죽은 자식 프로세스&lt;/li&gt;
+          &lt;li&gt;fork() -&amp;gt; 자식프로세스R -&amp;gt; exit()할 때 돌아갈 부모가 없는 상태&lt;/li&gt;
+          &lt;li&gt;이미 자식프로세스가 종료된 상태이기 때문에 리소스를 차지하지 않는다&lt;/li&gt;
+          &lt;li&gt;스케줄러에 선택이 되지 않기 때문에 CPU사용하지 않음&lt;/li&gt;
+          &lt;li&gt;하지만, PID는 사용하기 때문에 PID 고갈에 영향을 줄 수 있다&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sysctl -a | grep -i pid_max&lt;/code&gt;
+            &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  root@4bb32181ff3f:/# sysctl &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; pid_max
+  kernel.pid_max &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 99999 &lt;span class=&quot;c&quot;&gt;# 1~99999까지 랜덤한 값을 할당받음&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+            &lt;h2 id=&quot;25-프로세스-우선순위&quot;&gt;2.5 프로세스 우선순위&lt;/h2&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;프로세스 스케줄링
+    &lt;ul&gt;
+      &lt;li&gt;Scheduler: Run Queue에서 가장 우선순위 높은 작업선택 전달 -&amp;gt; Dispatcher: 현재작업 임시저장, 전달받은 작업 처리&lt;/li&gt;
+      &lt;li&gt;프로세스의 우선순위는 CPU core수를 고려해야한다.
+프로세스개수와 Core수가 같은 경우 우선순위와 상관없이 작업이 거의 동시에 시작된다. 따라서 우선순위가 효과있으려면,
+프로세스 개수가 Core수보다 많을 때이다.&lt;/li&gt;
+      &lt;li&gt;RT(Real Time)
+        &lt;ul&gt;
+          &lt;li&gt;커널에서 사용하는 daemon&lt;/li&gt;
+          &lt;li&gt;특정 시간에 반드시 종료되어야 하는 작업들이기 때문에 CFS 스케줄러보더 먼저 실행된다.&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
