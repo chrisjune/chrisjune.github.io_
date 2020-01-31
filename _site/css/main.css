@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700);
+/* @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700); */
 @import url("https://fonts.googleapis.com/css?family=Nanum+Gothic");
 html {
   font-family: sans-serif;
