@@ -131,6 +131,44 @@ square_related: recommend-fire
         * 이 값을 높게 설정하면 `kswapd`이 실행되면서 active영역에서 오래된 페이지들을 inactive로 옮긴후 메모리를 해제한다
         * 해제된 메모리의 대부분 swap으로 이동한다
 ## 4.4 Slab 메모리 영역
+* 커널 또한 프로세스이기 때문에 메모리를 필요로 한다. Slab이 바로 커널이 사용하는 영역이다.
+```sh
+Slab:              70112 kB
+SReclaimable:      48932 kB
+SUnreclaim:        21180 kB
+```
+* Slab: 커널이 직접 사용하는 영역, dentry cache, inode cache등 정보를 저장한다
+* SReclaimable: 말 그대로 재사용될 수 있는 영역, 캐쉬용도로 사용하는 메모리가 포함된다. 따라서 메모리가 부족하면 해제되어 프로세스에 할당가능한영역.
+* SUnreclaim: 재사용불가능한 영역, 커널이 현재 사용중이며 해제하여 다른 용도로 사용할 수 없다
+* `slabtop -o`
+    * slabtop명령어로 현재 커널에서 사용중인 slab의 정보를 살펴볼 수 있다
+    ```sh
+    root@139ed5b27ba1:/# slabtop -o
+    Active / Total Objects (% used)    : 299311 / 310928 (96.3%)
+    Active / Total Slabs (% used)      : 16695 / 16706 (99.9%)
+    Active / Total Caches (% used)     : 78 / 140 (55.7%)
+    Active / Total Size (% used)       : 63626.76K / 66470.81K (95.7%)
+    Minimum / Average / Maximum Object : 0.02K / 0.21K / 4096.00K
+
+    OBJS ACTIVE  USE OBJ SIZE  SLABS OBJ/SLAB CACHE SIZE NAME
+    92235  92187   0%    0.10K   2365       39      9460K buffer_head
+    63819  60149   0%    0.19K   3039       21     12156K dentry
+    26240  25789   0%    0.06K    410       64      1640K kmalloc-64
+    21576  21295   0%    0.03K    174      124       696K kmalloc-32
+    19362  18781   0%    0.57K   2766        7     11064K inode_cache
+    18156  18112   0%    0.12K    534       34      2136K kernfs_node_cache
+    ```
+* 일반 프로세스에서 사용하는 메모리와 커널에서 사용하는 메모리 영역이 다른 이유?
+    * 일반 프로세스 메모리 할당자인 버디 시스템은 4KB(4*1024byte) 단위로 메모리를 할당한다.
+    * 커널은 이렇게 큰 영역을 받을 필요가 없기 때문에 Slab할당자를 통하여 메모리를 할당받는다
+    * [할당영역    [사용영역]] - 이렇게 사용영역이 커지면 메모리 단편화 현상이 생기기 때문에 영역을 달리하여 다른 할당자를 사용한다
+    * 메모리 기본단위인 4KB를 할당받아 캐쉬 목적별로 나누어 사용한다.
+        * dentry: 디렉터리의 계층관계를 저장
+        * inode_cache: 파일의 inode에 대한 정보를 저장
+        * 파일에 자주 접근하고 디렉터리의 생성과 삭제가 빈번하면 해당 영역이 높아진다
+* slab할당자는 free에서 used로 계산된다. 캐쉬영역이기 때문에 buffer/cache로 포함되지 않는다
+* 프로세스들의 메모리 총 사용양이 used와 맞지 않으면 slab메모리 누수일 수 있다.
+    
 ## 4.5 Case Study - Slab 메모리 누수
 
             
