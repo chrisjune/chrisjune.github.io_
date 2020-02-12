@@ -1,7 +1,7 @@
 ---
 layout: post-sidebar
 date: 2020-02-12
-title: "Linux Command 4 - free 명령이 숨기고 있는 것들
+title: "Linux Command 4 - free 명령이 숨기고 있는 것들"
 categories: linux
 author_name : Tomas
 author_url : /author/tom
@@ -14,9 +14,9 @@ square_related: recommend-fire
 ---
 **free 명령이 숨기고 있는 것들**
 
+## 4.1 메모리 사용량 확인하기
 * CPU는 연산과정에 필요한 리소스라면, 메모리는 연산에 필요한 공간을 제공해주는 리소스이다.
 * 메모리에 연산에 필요한 함수와 변수를 담아둔다.
-## 4.1 메모리 사용량 확인하기
 * `free`
     * 메모리의 전체적인 현황을 가장 빠르게 확인
     ```sh
